@@ -34,7 +34,7 @@ public class Venta implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "empleado_id")
 	private Empleado empleado;
 	@OneToMany(mappedBy = "venta")
 	private List<VentaProducto> ventaProductos = new ArrayList<>();

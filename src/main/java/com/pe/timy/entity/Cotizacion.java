@@ -35,7 +35,7 @@ public class Cotizacion implements Serializable {
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
+	@JoinColumn(name = "empleado_id")
 	private Empleado empleado;
 	@OneToMany(mappedBy = "cotizacion")
 	private List<CotizacionProducto> cotizacionProductos = new ArrayList<>();
