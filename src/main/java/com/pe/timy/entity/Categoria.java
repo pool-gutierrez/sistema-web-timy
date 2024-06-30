@@ -16,15 +16,16 @@ import jakarta.persistence.Table;
 public class Categoria implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer categoriaId;
 	private String nombre;
 	private String descripcion;
+	private Boolean estado;
 	@OneToMany(mappedBy = "categoria")
 	private List<Producto> productos = new ArrayList<>();
-	
+
 	public Categoria() {
 		// TODO Auto-generated constructor stub
 	}
@@ -51,6 +52,14 @@ public class Categoria implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Boolean getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Boolean estado) {
+		this.estado = estado;
 	}
 
 	public List<Producto> getProductos() {

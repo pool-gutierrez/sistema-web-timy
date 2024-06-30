@@ -1,0 +1,95 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+	
+	<h3 class="text-center">Categorías</h3>
+
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+		Registrar
+	</button>
+
+	<table class="table">
+		<thead>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>Descripción</th>
+			<th>Estado</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="categoria: ${categorias}">
+				<td th:text="${categoria.categoriaId}"></td>
+				<td th:text="${categoria.nombre}"></td>
+				<td th:text="${categoria.descripcion}"></td>
+				<td>
+					<label th:if="${categoria.estado==true}">Activo</label>
+					<label th:if="${categoria.estado==false}">Inactivo</label>
+				</td>
+				<td>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal"
+						th:data-bs-target="'#editarModal' + ${categoria.categoriaId}">
+						Editar
+					</button>
+					<a class="btn btn-success" th:if="${categoria.estado == false}"
+						th:href="@{'/categoria/cambiar-estado/' + ${categoria.categoriaId}}">Activar</a>
+					<a class="btn btn-danger" th:if="${categoria.estado == true}"
+						th:href="@{'/categoria/cambiar-estado/' + ${categoria.categoriaId}}">Desactivar</a>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Registrar categoría</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form method="post" th:object="${categoria}" th:action="@{/categoria/registrar}">
+					<div class="modal-body">
+						<label>Nombre</label>
+						<input class="form-control" th:field="${categoria.nombre}" required minlength="4"
+							maxlength="150" onkeypress="return validarLetras(event)">
+						<label>Descripción</label>
+						<input class="form-control" th:field="${categoria.descripcion}" minlength="4" maxlength="150"
+							onkeypress="return validarLetras(event)">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Registrar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div th:each="categoria: ${categorias}">
+		<div class="modal fade" th:id="'editarModal' + ${categoria.categoriaId}" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Editar categoría</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form method="post" th:object="${categoria}"
+						th:action="@{'/categoria/actualizar/' + ${categoria.categoriaId}}">
+						<div class="modal-body">
+							<label>Nombre:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" type="text" th:value="${categoria.nombre}" th:name="nombre">
+							<label>Descripción:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="150"
+								class="form-control" type="text" th:value="${categoria.descripcion}"
+								th:name="descripcion">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Editar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>
