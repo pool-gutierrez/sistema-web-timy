@@ -21,14 +21,14 @@ public class CategoriaController {
 	private CategoriaService categoriaService;
 	
 	@GetMapping({"/", ""})
-	public String findAll(Model model) {
+	public String listar(Model model) {
 		model.addAttribute("categorias", categoriaService.findAll());
 		model.addAttribute("categoria", new Categoria());
 		return "admin/categoria";
 	}
 	
 	@PostMapping("/registrar")
-	public String save(Categoria categoria) {
+	public String registrar(Categoria categoria) {
 		categoria.setEstado(true);
 		categoria.setNombre(categoria.getNombre().trim());
 		categoriaService.save(categoria);
@@ -36,7 +36,7 @@ public class CategoriaController {
 	}
 	
 	@PostMapping(value = "/actualizar/{categoriaId}")
-	public String updatePost(@PathVariable(name = "categoriaId") Integer categoriaId, Categoria categoria) {
+	public String actualizar(@PathVariable(name = "categoriaId") Integer categoriaId, Categoria categoria) {
 		Optional<Categoria> categoriaDb = categoriaService.findById(categoriaId);
 		categoria.setEstado(categoriaDb.get().getEstado());
 		categoria.setNombre(categoria.getNombre().trim());
@@ -45,7 +45,7 @@ public class CategoriaController {
 	}
 	
 	@GetMapping(value = "/cambiar-estado/{categoriaId}")
-	public String changeEstado(@PathVariable(name = "categoriaId") Integer categoriaId) {
+	public String cambiarEstado(@PathVariable(name = "categoriaId") Integer categoriaId) {
 		Optional<Categoria> categoriaDb = categoriaService.findById(categoriaId);
 		if (categoriaDb.get().getEstado() == true) {
 			categoriaDb.get().setEstado(false);

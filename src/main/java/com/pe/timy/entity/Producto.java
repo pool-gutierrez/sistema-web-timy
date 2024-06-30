@@ -26,6 +26,7 @@ public class Producto implements Serializable {
 	private String nombre;
 	private String descripcion;
 	private String imagen;
+	private String imagenId;
 	private Double precioCompra;
 	private Double precioVenta;
 	private Boolean estado;
@@ -83,6 +84,14 @@ public class Producto implements Serializable {
 
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
+	}
+
+	public String getImagenId() {
+		return imagenId;
+	}
+
+	public void setImagenId(String imagenId) {
+		this.imagenId = imagenId;
 	}
 
 	public Double getPrecioCompra() {
