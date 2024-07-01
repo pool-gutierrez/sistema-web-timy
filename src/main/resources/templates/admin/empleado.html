@@ -1,0 +1,143 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registroModal">
+		Registrar
+	</button>
+
+	<table class="table">
+		<thead>
+			<th>#</th>
+			<th>Nombre completo</th>
+			<th>Rol</th>
+			<th>DNI</th>
+			<th>Usuario</th>
+			<th>Estado</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="empleado: ${empleados}">
+				<td th:text="${empleado.empleadoId}"></td>
+				<td th:text="${empleado.nombres} +' '+${empleado.apellidos}"></td>
+				<td th:text="${empleado.rol.nombre}"></td>
+				<td th:text="${empleado.dni}"></td>
+				<td th:text="${empleado.usuario}"></td>
+				<td>
+					<label th:if="${empleado.estado==true}">Activo</label>
+					<label th:if="${empleado.estado==false}">Inactivo</label>
+				</td>
+				<td>
+					<button type="button" class="btn btn-warning" data-toggle="modal"
+						th:data-target="'#editarModal' + ${empleado.empleadoId}">
+						Editar
+					</button>
+
+					<a class="btn btn-success" th:if="${empleado.estado == false}"
+						th:href="@{'empleado/cambiar-estado/' + ${empleado.empleadoId}}">Activar</a>
+					<a class="btn btn-danger" th:if="${empleado.estado == true}"
+						th:href="@{'empleado/cambiar-estado/' + ${empleado.empleadoId}}">Desactivar</a>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Registrar empleado</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" th:object="${empleado}" th:action="@{empleado/registrar}">
+					<div class="modal-body">
+						<label>Nombres</label>
+						<input required minlength="4" maxlength="50" onkeypress="return validarLetras(event)"
+							class="form-control" th:field="${empleado.nombres}">
+						<label>Apellidos</label>
+						<input required minlength="4" maxlength="50" onkeypress="return validarLetras(event)"
+							class="form-control" th:field="${empleado.apellidos}">
+						<label>DNI</label>
+						<input required minlength="8" maxlength="8" onkeypress="return validarNumeros(event)"
+							class="form-control" th:field="${empleado.dni}">
+						<label>Celular</label>
+						<input required minlength="9" maxlength="9" onkeypress="return validarNumeros(event)"
+							class="form-control" th:field="${empleado.celular}">
+						<label>Correo</label>
+						<input class="form-control" th:field="${empleado.correo}">
+						<label>Nombre de usuario</label>
+						<input required minlength="4" maxlength="50" onkeypress="return validarUsuario(event)"
+							class="form-control" th:field="${empleado.usuario}">
+						<label>Contraseña</label>
+						<input required minlength="4" maxlength="50" onkeypress="return validarDireccion(event)"
+							type="password" class="form-control" th:field="${empleado.contrasena}">
+						<label>Rol</label>
+						<select class="form-control" th:field="${empleado.rol}">
+							<option value="" hidden="true">Seleccione un rol para el empleado</option>
+							<option th:each="rol : ${roles}" th:value="${rol.rolId}" th:text="${rol.nombre}">
+							</option>
+						</select>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Registrar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div th:each="empleado: ${empleados}">
+		<div class="modal fade" th:id="'editarModal' + ${empleado.empleadoId}" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Editar empleado</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form method="post" th:object="${empleado}"
+						th:action="@{'empleado/actualizar/' + ${empleado.empleadoId}}">
+						<div class="modal-body">
+							<label>Nombres</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" th:value="${empleado.nombres}" th:name="nombres">
+							<label>Apellidos</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" th:value="${empleado.apellidos}" th:name="apellidos">
+							<label>DNI</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="8" maxlength="8"
+								class="form-control" th:value="${empleado.dni}" th:name="dni">
+							<label>Celular</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
+								class="form-control" th:value="${empleado.celular}" th:name="celular">
+							<label>Correo</label>
+							<input onkeypress="return validarCorreo(event)" required minlength="10" maxlength="150"
+								class="form-control" th:value="${empleado.correo}" th:name="correo">
+							<label>Nombre de usuario</label>
+							<input onkeypress="return validarUsuario(event)" required minlength="4" maxlength="50"
+								class="form-control" th:value="${empleado.usuario}" th:name="usuario">
+							<span class="text-secondary">Si no desea cambiar la contraseña del empleado, deje el
+								campo vacío.</span><br>
+							<label>Contraseña</label>
+							<input type="password" class="form-control" th:field="${empleado.contrasena}">
+							<label class="form-label">Confirmar contraseña nueva</label>
+							<input type="password" th:name="newPassword" class="form-control" />
+							<label>Rol</label>
+							<select required class="form-control" th:value="${empleado.rol}" th:name="rol">
+								<option th:each="rol : ${roles}" th:value="${rol.rolId}" th:text="${rol.nombre}"
+									th:selected="${empleado.rol.rolId}==${rol.rolId}">
+								</option>
+							</select>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary">Editar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>
