@@ -9,4 +9,5 @@ import com.pe.timy.entity.Empleado;
 public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
 
 	List<Empleado> findAllByEstado(Boolean estado);
+	Empleado findByUsuario(String Usuario);
 }

@@ -11,4 +11,5 @@ public interface EmpleadoService {
 	List<Empleado> findAllActive();
 	Optional<Empleado> findById(Integer empleadoId);
 	void save(Empleado empleado);
+	Empleado findByUsuario(String usuario);
 }
