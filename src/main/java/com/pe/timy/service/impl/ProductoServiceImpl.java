@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pe.timy.entity.Producto;
+import com.pe.timy.entity.Proveedor;
 import com.pe.timy.repository.ProductoRepository;
 import com.pe.timy.service.ProductoService;
 
@@ -39,5 +40,11 @@ public class ProductoServiceImpl implements ProductoService {
 	@Transactional
 	public void save(Producto producto) {
 		productoRepository.save(producto);	
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Producto> findAllByProveedor(Proveedor proveedor) {
+		return productoRepository.findAllByProveedorAndEstado(proveedor, true);
 	}
 }

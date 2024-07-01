@@ -17,6 +17,8 @@ import com.pe.timy.entity.Producto;
 import com.pe.timy.service.CategoriaService;
 import com.pe.timy.service.CloudinaryService;
 import com.pe.timy.service.ProductoService;
+import com.pe.timy.service.ProveedorService;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -28,12 +30,15 @@ public class ProductoController {
 	@Autowired
 	private CategoriaService categoriaService;
 	@Autowired
+	private ProveedorService proveedorService;
+	@Autowired
 	private CloudinaryService cloudinaryService;
 
 	@GetMapping({ "/", "" })
 	public String listar(Model model) {
 		model.addAttribute("productos", productoService.findAll());
 		model.addAttribute("categorias", categoriaService.findAllActive());
+		model.addAttribute("proveedores", proveedorService.findAllActive());
 		model.addAttribute("producto", new Producto());
 		return "admin/producto";
 	}

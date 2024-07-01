@@ -33,6 +33,9 @@ public class Producto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+	@ManyToOne
+	@JoinColumn(name = "proveedor_id")
+	private Proveedor proveedor;
 	@OneToMany(mappedBy = "producto")
 	private List<VentaProducto> ventaProductos = new ArrayList<>();
 	@OneToMany(mappedBy = "producto")
@@ -124,6 +127,14 @@ public class Producto implements Serializable {
 
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	public List<VentaProducto> getVentaProductos() {

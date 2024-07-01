@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.pe.timy.entity.Producto;
+import com.pe.timy.entity.Proveedor;
 
 public interface ProductoService {
 
@@ -11,4 +12,5 @@ public interface ProductoService {
 	List<Producto> findAllActive();
 	Optional<Producto> findById(Integer productoId);
 	void save(Producto producto);
+	List<Producto> findAllByProveedor(Proveedor proveedor);
 }

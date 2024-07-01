@@ -59,6 +59,12 @@
 							<option th:each="categoria : ${categorias}" th:value="${categoria.categoriaId}"
 								th:text="${categoria.nombre}"></option>
 						</select>
+						<label>Proveedor</label>
+						<select required class="form-control" th:field="${producto.proveedor}">
+							<option value="" hidden="true">Seleccione un proveedor</option>
+							<option th:each="proveedor : ${proveedores}" th:value="${proveedor.proveedorId}"
+								th:text="${proveedor.nombre}"></option>
+						</select>
 						<label>Nombre</label>
 						<input class="form-control" th:field="${producto.nombre}" required minlength="4" maxlength="150"
 							onkeypress="return validarLetras(event)">
@@ -100,8 +106,14 @@
 							<label>Categoría</label>
 							<select required class="form-control" th:value="${producto.categoria}" th:name="categoria">
 								<option th:each="categoria : ${categorias}" th:value="${categoria.categoriaId}"
-									th:text="${categoria.nombre}"
-									th:selected="${categoria.categoriaId}==${2}">
+									th:text="${categoria.nombre}" th:selected="${categoria.categoriaId}==${producto.categoria.categoriaId}">
+								</option>
+							</select>
+							<label>Proveedor</label>
+							<select required class="form-control" th:value="${producto.proveedor}" th:name="proveedor">
+								<option th:each="proveedor : ${proveedores}" th:value="${proveedor.proveedorId}"
+									th:text="${proveedor.nombre}" 
+									th:selected="${producto.proveedor.proveedorId}==${proveedor.proveedorId}">
 								</option>
 							</select>
 							<label>Nombre:</label>

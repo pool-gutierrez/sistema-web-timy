@@ -1,0 +1,74 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+
+	<h3 class="text-center">Nueva compra</h3>
+
+	<form method="post" th:object="${compraProducto}" th:action="@{/compra/agregar-producto}">
+		<div class="row">
+			<div class="col-6">
+				<label>Fecha</label>
+				<input class="form-control" th:value="${compra.fecha}" readonly>
+			</div>
+			<div class="col-6">
+				<label>Proveedor</label>
+				<input class="form-control" th:value="${compra.proveedor.nombre}" readonly>
+			</div>
+		</div>
+		<label>Producto</label>
+		<select required class="form-control" th:field="${compraProducto.producto}">
+			<option value="" hidden="true">Seleccione un producto</option>
+			<option th:each="producto : ${productos}" th:value="${producto.productoId}"
+				th:text="${producto.nombre}+' - S/'+${producto.precioCompra}">
+			</option>
+		</select>
+		<div class="row">
+			<div class="col-6">
+				<label>Cantidad</label>
+				<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
+					class="form-control" th:field="${compraProducto.cantidad}" type="number">
+			</div>
+			<div class="col-6">
+				<label></label>
+				<button type="submit" class="btn btn-primary">Agregar producto</button>
+			</div>
+		</div>
+	</form>
+
+	<table class="table">
+		<thead>
+			<th>Opciones</th>
+			<th>#</th>
+			<th>Producto</th>
+			<th>Precio de compra</th>
+			<th>Cantidad</th>
+			<th>Monto</th>
+		</thead>
+		<tbody class="table-group-divider">
+			<tr th:each="compraProducto, itrStat : ${listaCompra}">
+				<td>
+					<a class="btn btn-danger" th:href="@{'/compra/aumentar-producto/' + ${itrStat.index}}">+</a>
+					<a class="btn btn-danger" th:href="@{'/compra/disminuir-producto/' + ${itrStat.index}}">-</a>
+					<a class="btn btn-danger" th:href="@{'/compra/quitar-producto/' + ${itrStat.index}}">Quitar</a>
+				</td>
+				<td th:text="${itrStat.index+1}"></td>
+				<td th:text="${compraProducto.producto.nombre}"></td>
+				<td th:text="${compraProducto.producto.precioCompra}"></td>
+				<td th:text="${compraProducto.cantidad}"></td>
+				<td th:text="${compraProducto.producto.precioCompra}*${compraProducto.cantidad}"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="text-end fw-bold">Total</td>
+				<td class="fw-bold" th:text="'S/'+${total}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<form method="post" th:object="${compra}" th:action="@{/compra/registrar}">
+		<button type="submit" class="btn btn-primary">Registrar compra</button>
+	</form>
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>
