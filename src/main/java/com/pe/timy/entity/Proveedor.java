@@ -21,7 +21,7 @@ public class Proveedor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer proveedorId;
 	private String nombre;
-	private Integer ruc;
+	private Long ruc;
 	private String numeroContacto;
 	private String correo;
 	private String direccion;
@@ -49,11 +49,11 @@ public class Proveedor implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public Integer getRuc() {
+	public Long getRuc() {
 		return ruc;
 	}
 
-	public void setRuc(Integer ruc) {
+	public void setRuc(Long ruc) {
 		this.ruc = ruc;
 	}
 

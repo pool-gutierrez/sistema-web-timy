@@ -1,0 +1,116 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+
+	<h3 class="text-center">Clientes</h3>
+
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+		Registrar
+	</button>
+
+	<table class="table">
+		<thead>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>DNI</th>
+			<th>Celular</th>
+			<th>Correo</th>
+			<th>Estado</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="cliente: ${clientes}">
+				<td th:text="${cliente.clienteId}"></td>
+				<td th:text="${cliente.nombres}+' '+${cliente.apellidos}"></td>
+				<td th:text="${cliente.dni}"></td>
+				<td th:text="${cliente.celular}"></td>
+				<td th:text="${cliente.correo}"></td>
+				<td>
+					<label th:if="${cliente.estado==true}">Activo</label>
+					<label th:if="${cliente.estado==false}">Inactivo</label>
+				</td>
+				<td>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal"
+						th:data-bs-target="'#editarModal' + ${cliente.clienteId}">
+						Editar
+					</button>
+					<a class="btn btn-success" th:if="${cliente.estado == false}"
+						th:href="@{'/cliente/cambiar-estado/' + ${cliente.clienteId}}">Activar</a>
+					<a class="btn btn-danger" th:if="${cliente.estado == true}"
+						th:href="@{'/cliente/cambiar-estado/' + ${cliente.clienteId}}">Desactivar</a>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Registrar cliente</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form method="post" th:object="${cliente}" th:action="@{/cliente/registrar}">
+					<div class="modal-body">
+						<label>Nombres</label>
+						<input class="form-control" th:field="${cliente.nombres}" required minlength="4" maxlength="150"
+							onkeypress="return validarLetras(event)">
+						<label>Apellidos</label>
+						<input class="form-control" th:field="${cliente.apellidos}" required minlength="4"
+							maxlength="150" onkeypress="return validarLetras(event)">
+						<label>DNI</label>
+						<input class="form-control" th:field="${cliente.dni}" minlength="8" maxlength="8"
+							onkeypress="return validarNumeros(event)">
+						<label>Celular</label>
+						<input class="form-control" th:field="${cliente.celular}" minlength="9" maxlength="9"
+							onkeypress="return validarNumeros(event)">
+						<label>Correo</label>
+						<input class="form-control" th:field="${cliente.correo}" minlength="10" maxlength="150"
+							onkeypress="return validarAlfanumericos(event)">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Registrar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div th:each="cliente: ${clientes}">
+		<div class="modal fade" th:id="'editarModal' + ${cliente.clienteId}" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Editar cliente</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form method="post" th:object="${cliente}"
+						th:action="@{'/cliente/actualizar/' + ${cliente.clienteId}}">
+						<div class="modal-body">
+							<label>Nombres:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" type="text" th:value="${cliente.nombres}" th:name="nombres">
+							<label>Apellidos:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" type="text" th:value="${cliente.apellidos}" th:name="apellidos">
+							<label>DNI:</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="8" maxlength="8"
+								class="form-control" type="text" th:value="${cliente.dni}" th:name="dni">
+							<label>Celular:</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
+								class="form-control" type="text" th:value="${cliente.celular}" th:name="celular">
+							<label>Correo:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="10" maxlength="150"
+								class="form-control" type="text" th:value="${cliente.correo}" th:name="correo">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Editar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>

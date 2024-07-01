@@ -1,0 +1,116 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+
+	<h3 class="text-center">Proveedores</h3>
+
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
+		Registrar
+	</button>
+
+	<table class="table">
+		<thead>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>RUC</th>
+			<th>Número de contacto</th>
+			<th>Correo</th>
+			<th>Estado</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="proveedor: ${proveedores}">
+				<td th:text="${proveedor.proveedorId}"></td>
+				<td th:text="${proveedor.nombre}"></td>
+				<td th:text="${proveedor.ruc}"></td>
+				<td th:text="${proveedor.numeroContacto}"></td>
+				<td th:text="${proveedor.correo}"></td>
+				<td>
+					<label th:if="${proveedor.estado==true}">Activo</label>
+					<label th:if="${proveedor.estado==false}">Inactivo</label>
+				</td>
+				<td>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal"
+						th:data-bs-target="'#editarModal' + ${proveedor.proveedorId}">
+						Editar
+					</button>
+					<a class="btn btn-success" th:if="${proveedor.estado == false}"
+						th:href="@{'/proveedor/cambiar-estado/' + ${proveedor.proveedorId}}">Activar</a>
+					<a class="btn btn-danger" th:if="${proveedor.estado == true}"
+						th:href="@{'/proveedor/cambiar-estado/' + ${proveedor.proveedorId}}">Desactivar</a>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5">Registrar proveedor</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<form method="post" th:object="${proveedor}" th:action="@{/proveedor/registrar}">
+					<div class="modal-body">
+						<label>Nombre</label>
+						<input class="form-control" th:field="${proveedor.nombre}" required minlength="4"
+							maxlength="150" onkeypress="return validarLetras(event)">
+						<label>RUC</label>
+						<input class="form-control" th:field="${proveedor.ruc}" required minlength="11" maxlength="11"
+							onkeypress="return validarLetras(event)">
+						<label>Número de contacto</label>
+						<input class="form-control" th:field="${proveedor.numeroContacto}" minlength="9" maxlength="9"
+							onkeypress="return validarNumeros(event)">
+						<label>Correo</label>
+						<input class="form-control" th:field="${proveedor.correo}" minlength="10" maxlength="150"
+							onkeypress="return validarAlfanumericos(event)">
+						<label>Dirección</label>
+						<input class="form-control" th:field="${proveedor.direccion}" minlength="10" maxlength="250"
+							onkeypress="return validarDireccion(event)">
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary">Registrar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div th:each="proveedor: ${proveedores}">
+		<div class="modal fade" th:id="'editarModal' + ${proveedor.proveedorId}" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Editar proveedor</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form method="post" th:object="${proveedor}"
+						th:action="@{'/proveedor/actualizar/' + ${proveedor.proveedorId}}">
+						<div class="modal-body">
+							<label>Nombre:</label>
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+								class="form-control" type="text" th:value="${proveedor.nombre}" th:name="nombre">
+							<label>RUC:</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="11" maxlength="11"
+								class="form-control" type="text" th:value="${proveedor.ruc}" th:name="ruc">
+							<label>Número de contacto:</label>
+							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
+								class="form-control" type="text" th:value="${proveedor.numeroContacto}" th:name="numeroContacto">
+							<label>Correo:</label>
+							<input onkeypress="return validarAlfanumericos(event)" required minlength="10" maxlength="150"
+								class="form-control" type="text" th:value="${proveedor.correo}" th:name="correo">
+							<label>Dirección:</label>
+							<input onkeypress="return validarDireccion(event)" required minlength="4" maxlength="250"
+								class="form-control" type="text" th:value="${proveedor.direccion}" th:name="direccion">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Editar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>

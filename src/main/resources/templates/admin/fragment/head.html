@@ -68,8 +68,8 @@
 					data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Ingreso de productos</h6>:</h6>
-						<a class="collapse-item" href="utilities-color.html">Proveedores</a>
-						<a class="collapse-item" href="utilities-border.html">Compras</a>
+						<a class="collapse-item" th:href="@{/proveedor}">Proveedores</a>
+						<a class="collapse-item" th:href="@{/compra}">Compras</a>
 					</div>
 				</div>
 			</li>
@@ -84,14 +84,14 @@
 					data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Salida de productos:</h6>
-						<a class="collapse-item" href="utilities-color.html">Clientes</a>
-						<a class="collapse-item" href="utilities-border.html">Ventas</a>
+						<a class="collapse-item" th:href="@{/cliente}">Clientes</a>
+						<a class="collapse-item" th:href="@{/venta}">Ventas</a>
 					</div>
 				</div>
 			</li>
 
 			<li class="nav-item">
-				<a class="nav-link" href="charts.html">
+				<a class="nav-link" th:href="@{/cotizacion}">
 					<i class="fas fa-tag"></i>
 					<span>Cotizaciones</span></a>
 			</li>
@@ -103,7 +103,7 @@
 			</div>
 
 			<li class="nav-item">
-				<a class="nav-link" href="charts.html">
+				<a class="nav-link" th:href="@{/empleado}">
 					<i class="fas fa-users-cog"></i>
 					<span>Empleados</span></a>
 			</li>
