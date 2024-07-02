@@ -21,8 +21,8 @@
 			<tr th:each="compra: ${compras}">
 				<td th:text="${compra.compraId}"></td>
 				<td th:text="${compra.fecha}"></td>
-				<td th:text="${compra.hora}"></td>
-				<td th:text="${compra.empleado.nombres}"></td>
+				<td th:text="${#temporals.format(compra.hora, 'HH:mm:ss')}"></td>
+				<td th:text="${compra.empleado.nombres}+' '+${compra.empleado.apellidos}"></td>
 				<td th:text="${compra.proveedor.nombre}"></td>
 				<td>
 					<label th:if="${compra.estado=='Pendiente'}">Pendiente</label>

@@ -1,12 +1,11 @@
 <head th:replace="~{admin/fragment/head}"></head>
 <div class="container">
-
-	<h3 class="text-center">Nueva venta</h3>
-	<form method="post" th:object="${ventaProducto}" th:action="@{/venta/agregar-producto}">
+	<h3 class="text-center">Cotización N° <label th:text="${cotizacion.codigo}"></label></h3>
+	<form method="post" th:object="${cotizacionProducto}" th:action="@{/cotizacion/agregar-producto}">
 		<div class="row">
 			<div class="col-6">
 				<label>Fecha</label>
-				<input class="form-control" th:value="${venta.fecha}" readonly>
+				<input class="form-control" th:value="${cotizacion.fecha}" readonly>
 			</div>
 			<div class="col-6">
 				<label>Cliente</label>
@@ -24,7 +23,7 @@
 			</div>
 		</div>
 		<label>Producto</label>
-		<select required class="form-control" th:field="${ventaProducto.producto}">
+		<select required class="form-control" th:field="${cotizacionProducto.producto}">
 			<option value="" hidden="true">Seleccione un producto</option>
 			<option th:each="producto : ${productos}" th:value="${producto.productoId}"
 				th:text="${producto.nombre}+' - S/'+${producto.precioVenta}">
@@ -34,7 +33,7 @@
 			<div class="col-6">
 				<label>Cantidad</label>
 				<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
-					class="form-control" th:field="${ventaProducto.cantidad}" type="number">
+					class="form-control" th:field="${cotizacionProducto.cantidad}" type="number">
 			</div>
 			<div class="col-6">
 				<label></label>
@@ -53,18 +52,18 @@
 			<th>Monto</th>
 		</thead>
 		<tbody class="table-group-divider">
-			<tr th:each="ventaProducto, itrStat : ${listaVenta}">
+			<tr th:each="cotizacionProducto, itrStat : ${listaCotizacion}">
 				<td>
-					<a class="btn btn-danger" th:href="@{'/venta/aumentar-producto/' + ${itrStat.index}}">+</a>
-					<a class="btn btn-danger" th:href="@{'/venta/disminuir-producto/' + ${itrStat.index}}">-</a>
-					<a class="btn btn-danger" th:href="@{'/venta/quitar-producto/' + ${itrStat.index}}">Quitar</a>
+					<a class="btn btn-danger" th:href="@{'/cotizacion/aumentar-producto/' + ${itrStat.index}}">+</a>
+					<a class="btn btn-danger" th:href="@{'/cotizacion/disminuir-producto/' + ${itrStat.index}}">-</a>
+					<a class="btn btn-danger" th:href="@{'/cotizacion/quitar-producto/' + ${itrStat.index}}">Quitar</a>
 				</td>
 				<td th:text="${itrStat.index+1}"></td>
-				<td th:text="${ventaProducto.producto.nombre}"></td>
-				<td th:text="${ventaProducto.producto.precioVenta}"></td>
-				<td th:text="${ventaProducto.cantidad}"></td>
+				<td th:text="${cotizacionProducto.producto.nombre}"></td>
+				<td th:text="${cotizacionProducto.producto.precioVenta}"></td>
+				<td th:text="${cotizacionProducto.cantidad}"></td>
 				<td
-					th:text="${#numbers.formatDecimal(ventaProducto.producto.precioVenta*ventaProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
+					th:text="${#numbers.formatDecimal(cotizacionProducto.producto.precioVenta*cotizacionProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
 				</td>
 			</tr>
 			<tr>
@@ -78,7 +77,7 @@
 		</tbody>
 	</table>
 
-	<form method="post" th:object="${venta}" th:action="@{/venta/registrar}">
+	<form method="post" th:object="${cotizacion}" th:action="@{/cotizacion/registrar}">
 		<div class="row">
 			<input class="form-control" type="hidden" th:value="${total}" id="subtotal">
 			<div class="col-3">
@@ -101,7 +100,7 @@
 			</div>
 		</div>
 
-		<button type="submit" class="btn btn-primary">Registrar venta</button>
+		<button type="submit" class="btn btn-primary">Registrar cotizacion</button>
 	</form>
 </div>
 <footer th:replace="~{admin/fragment/foot}"></footer>

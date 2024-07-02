@@ -19,7 +19,7 @@
 			<tr th:each="venta: ${ventas}">
 				<td th:text="${venta.ventaId}"></td>
 				<td th:text="${venta.fecha}"></td>
-				<td th:text="${venta.hora}"></td>
+				<td th:text="${#temporals.format(venta.hora, 'HH:mm:ss')}"></td>
 				<td th:text="${venta.empleado.nombres}+' '+${venta.empleado.apellidos}"></td>
 				<td th:text="${venta.cliente.nombres}+' '+${venta.cliente.nombres}"></td>
 				<td>

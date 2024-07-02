@@ -1,0 +1,36 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+
+	<h3 class="text-center">Cotizaciones</h3>
+
+	<a class="btn btn-primary" th:href="@{/cotizacion/generar}">Nueva cotización</a>
+
+	<table class="table">
+		<thead>
+			<th># de cotización</th>
+			<th>Fecha</th>
+			<th>Hora</th>
+			<th>Empleado</th>
+			<th>Cliente</th>
+			<th>Estado</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="cotizacion: ${cotizaciones}">
+				<td th:text="${cotizacion.codigo}"></td>
+				<td th:text="${cotizacion.fecha}"></td>
+				<td th:text="${#temporals.format(cotizacion.hora, 'HH:mm:ss')}"></td>
+				<td th:text="${cotizacion.empleado.nombres}+' '+${cotizacion.empleado.apellidos}"></td>
+				<td th:text="${cotizacion.cliente.nombres}+' '+${cotizacion.cliente.nombres}"></td>
+				<td>
+					<label th:if="${cotizacion.estado=='Emitido'}">Emitido</label>
+					<label th:if="${cotizacion.estado=='Vendido'}">Vendido</label>
+				</td>
+				<td>
+					<a class="btn btn-success" th:if="${cotizacion.estado=='Emitido'}"
+						th:href="@{'/cotizacion/finalizar/' + ${cotizacion.cotizacionId}}">Generar venta</a>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>
