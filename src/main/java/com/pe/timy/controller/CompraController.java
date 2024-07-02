@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pe.timy.entity.Compra;
 import com.pe.timy.entity.CompraProducto;
+import com.pe.timy.entity.Inventario;
 import com.pe.timy.entity.Producto;
 import com.pe.timy.entity.Proveedor;
 import com.pe.timy.service.CompraProductoService;
 import com.pe.timy.service.CompraService;
 import com.pe.timy.service.EmpleadoService;
+import com.pe.timy.service.InventarioService;
 import com.pe.timy.service.ProductoService;
 import com.pe.timy.service.ProveedorService;
 
@@ -39,6 +41,9 @@ public class CompraController {
 	private EmpleadoService empleadoService;
 	@Autowired
 	private CompraProductoService compraProductoService;
+	@Autowired
+	private InventarioService inventarioService;
+	
 
 	List<CompraProducto> detalleCompra = new ArrayList<>();
 	Compra compraGeneral = new Compra();
@@ -155,6 +160,10 @@ public class CompraController {
 		for (CompraProducto detalle : detalleCompra) {
 			detalle.setCompra(compraGeneral);
 			compraProductoService.save(detalle);
+			Inventario inventario = inventarioService.findByProducto(detalle.getProducto()).get();
+			inventario.setEntradas(inventario.getEntradas()+detalle.getCantidad());
+			inventario.setStockActual(inventario.getEntradas()-inventario.getSalidas());
+			inventarioService.save(inventario);
 		}
 
 		return "redirect:/compra/";

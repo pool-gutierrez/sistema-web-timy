@@ -20,7 +20,7 @@ public class Inventario implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer inventarioId;
-	private Integer entredas;
+	private Integer entradas;
 	private Integer salidas;
 	private Integer stockActual;
 	private Integer stockMinimo;
@@ -41,12 +41,12 @@ public class Inventario implements Serializable {
 		this.inventarioId = inventarioId;
 	}
 
-	public Integer getEntredas() {
-		return entredas;
+	public Integer getEntradas() {
+		return entradas;
 	}
 
-	public void setEntredas(Integer entredas) {
-		this.entredas = entredas;
+	public void setEntradas(Integer entradas) {
+		this.entradas = entradas;
 	}
 
 	public Integer getSalidas() {

@@ -1,0 +1,71 @@
+<head th:replace="~{admin/fragment/head}"></head>
+<div class="container">
+	<h3 class="text-center">Inventario</h3>
+	<table class="table">
+		<thead>
+			<th>#</th>
+			<th>Producto</th>
+			<th>Entradas</th>
+			<th>Salidas</th>
+			<th>Stock actual</th>
+			<th>Stock mínimo</th>
+			<th>Fecha actualización</th>
+			<th>Acciones</th>
+		</thead>
+		<tbody>
+			<tr th:each="inventario, itrStat : ${inventarios}">
+				<td th:text="${itrStat.index+1}"></td>
+				<td th:text="${inventario.producto.nombre}"></td>
+				<td th:text="${inventario.entradas}"></td>
+				<td th:text="${inventario.salidas}"></td>
+				<td th:text="${inventario.stockActual}"></td>
+				<td th:text="${inventario.stockMinimo}"></td>
+				<td th:text="${inventario.fechaActualizacion}"></td>
+				<td>
+					<button type="button" class="btn btn-warning" data-bs-toggle="modal"
+						th:data-bs-target="'#editarModal' + ${inventario.inventarioId}">
+						Editar
+					</button>
+			</tr>
+		</tbody>
+	</table>
+
+	<div th:each="inventario: ${inventarios}">
+		<div class="modal fade" th:id="'editarModal' + ${inventario.inventarioId}" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5">Editar existencia</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form method="post" th:object="${inventario}"
+						th:action="@{'/inventario/actualizar/' + ${inventario.inventarioId}}">
+						<div class="modal-body">
+							<label>Producto</label>
+							<input class="form-control" type="text" th:value="${inventario.producto.nombre}" readonly>
+							<label>Entradas</label>
+							<input class="form-control" type="text" th:value="${inventario.entradas}" readonly>
+							<label>Salidas</label>
+							<input class="form-control" type="text" th:value="${inventario.salidas}" readonly>
+							<label>Stock actual</label>
+							<input class="form-control" type="text" th:value="${inventario.stockActual}" readonly>
+							<label>Fecha de última actualización</label>
+							<input class="form-control" type="text" th:value="${inventario.fechaActualizacion}"
+								readonly>
+							<label>Stock mínimo</label>
+							<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
+								class="form-control" type="number" th:value="${inventario.stockMinimo}"
+								th:name="stockMinimo" min="0">
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Editar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<footer th:replace="~{admin/fragment/foot}"></footer>

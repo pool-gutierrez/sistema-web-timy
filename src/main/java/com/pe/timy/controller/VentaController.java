@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.pe.timy.entity.Inventario;
 import com.pe.timy.entity.Venta;
 import com.pe.timy.entity.VentaProducto;
 import com.pe.timy.service.ClienteService;
 import com.pe.timy.service.EmpleadoService;
+import com.pe.timy.service.InventarioService;
 import com.pe.timy.service.ProductoService;
 import com.pe.timy.service.VentaProductoService;
 import com.pe.timy.service.VentaService;
@@ -37,6 +39,8 @@ public class VentaController {
 	private EmpleadoService empleadoService;
 	@Autowired
 	private VentaProductoService ventaProductoService;
+	@Autowired
+	private InventarioService inventarioService;
 
 	List<VentaProducto> detalleVenta = new ArrayList<>();
 	Venta ventaGeneral = new Venta();
@@ -159,6 +163,10 @@ public class VentaController {
 		for (VentaProducto detalle : detalleVenta) {
 			detalle.setVenta(ventaGeneral);
 			ventaProductoService.save(detalle);
+			Inventario inventario = inventarioService.findByProducto(detalle.getProducto()).get();
+			inventario.setSalidas(inventario.getSalidas()+detalle.getCantidad());
+			inventario.setStockActual(inventario.getEntradas()-inventario.getSalidas());
+			inventarioService.save(inventario);
 		}
 
 		detalleVenta.clear();
