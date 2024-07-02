@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Distribuidora Timy E.I.R.L.</title>
+
+	<head th:replace="~{web/fragment/layout :: head}"></head>
+</head>
+
+<body>
+	<div th:replace="~{web/fragment/layout :: header}"></div>
+
+	<div id="carrusel" class="carousel slide" data-bs-ride="true">
+		<div class="carousel-indicators">
+			<button type="button" data-bs-target="#carrusel" data-bs-slide-to="0" class="active" aria-current="true"
+				aria-label="Slide 1"></button>
+			<button type="button" data-bs-target="#carrusel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+		</div>
+		<div class="carousel-inner">
+			<div class="carousel-item active">
+				<img th:src="@{/web/img/banner_info.png}" class="d-block w-100" alt="banner-logo">
+			</div>
+			<div class="carousel-item">
+				<img th:src="@{/web/img/banner_logo.png}" class="d-block w-100" alt="banner">
+			</div>
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#carrusel" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previo</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#carrusel" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Siguiente</span>
+		</button>
+	</div>
+
+	<div th:if="${otrosProductos}">
+		<section class="bg-secondary bg-opacity-10 pt-5">
+			<div class="container px-4 px-lg-5 mt-5">
+
+				<h2 class="fw-bolder mb-4">Productos recientes</h2>
+				<div id="carouselProd" class="carousel slide carousel-dark" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+								<div th:each="prod, iterStat : ${otrosProductos}"
+									th:if="${iterStat.index >= 0 and iterStat.index <= 3}">
+									<div class="col mb-4">
+										<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div th:if="${otrosProductos.size()>4}">
+							<div class="carousel-item">
+								<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+									<div th:each="prod, iterStat : ${otrosProductos}"
+										th:if="${iterStat.index >= 4 and iterStat.index <= 7}">
+										<div class="col mb-4">
+											<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div th:if="${otrosProductos.size()>8}">
+							<div class="carousel-item">
+								<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+									<div th:each="prod, iterStat : ${otrosProductos}"
+										th:if="${iterStat.index >= 4 and iterStat.index <= 7}">
+										<div class="col mb-4">
+											<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselProd"
+						data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previo</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselProd"
+						data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Siguiente</span>
+					</button>
+				</div>
+			</div>
+		</section>
+
+	</div>
+
+	<section class="bg-secondary bg-opacity-10 py-5">
+		<div class="container px-4 px-lg-5 pb-5">
+			<h2 class="fw-bolder mb-4">Todos nuestros productos</h2>
+			<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+				<div th:each="prod: ${productos}">
+					<div class="col mb-4">
+						<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div th:replace="~{web/fragment/layout :: footer}"></div>
+</body>
+
+</html>

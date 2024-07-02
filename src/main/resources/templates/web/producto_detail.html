@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Distribuidora Timy E.I.R.L.</title>
+
+	<head th:replace="~{web/fragment/layout :: head}"></head>
+</head>
+
+<body>
+	<div th:replace="~{web/fragment/layout :: header}"></div>
+
+	<section class="bg-secondary bg-opacity-10 py-5">
+		<div class="container my-5">
+			<main class="my-5">
+				<div class="bg-white row p-4 rounded mb-5">
+					<div class="col-md-6">
+						<img class="card-img-top" th:src="${producto.imagen}" th:alt="${producto.nombre}" />
+					</div>
+					<div class="col-md-6">
+						<div class="ms-3">
+							<p class="fs-1 fw-bold text-primary" th:text="${producto.nombre}"></p>
+							<p class="text-secondary" th:text="${producto.categoria.nombre}"></p>
+							<div class="fs-2 mb-3">
+								<span th:text="'S/ '+${producto.precioVenta}"></span>
+							</div>
+							<hr class="text-secondary mb-3">
+							<p class="lead" th:text="${producto.descripcion}"></p>
+						</div>
+					</div>
+				</div>
+			</main>
+		</div>
+	</section>
+
+	<div th:if="${productosRelacionados != null}">
+		<section class="py-5 bg-light">
+			<div class="container px-4 px-lg-5 mt-5">
+				<h2 class="fw-bolder mb-4">Productos relacionados</h2>
+				<div id="carouselProd" class="carousel slide carousel-dark" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+								<div th:each="prod, iterStat : ${productosRelacionados}"
+									th:if="${iterStat.index >= 0 and iterStat.index <= 3}">
+									<div class="col mb-4">
+										<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<c:if test="${productosRelacionados.size()>4}">
+							<div class="carousel-item">
+								<div class="row gx-4 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+									<div th:each="prod, iterStat : ${productosRelacionados}"
+										th:if="${iterStat.index >= 4 and iterStat.index <= 7}">
+										<div class="col mb-4">
+											<div th:replace="~{web/fragment/layout :: producto_card}"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</c:if>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselProd"
+						data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previo</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselProd"
+						data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Siguiente</span>
+					</button>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div th:replace="~{web/fragment/layout :: footer}"></div>
+</body>
+
+</html>

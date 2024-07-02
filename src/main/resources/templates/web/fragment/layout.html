@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+	<meta charset="UTF-8">
+	<meta name="language" content="es-PE">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/png" th:href="@{/web/img/timy_icono.png}" />
+	<link rel="stylesheet" th:href="@{/web/css/font-awesome/css/all.min.css}">
+	<link rel="stylesheet" th:href="@{/web/css/styles.css}">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+	<div th:fragment="header">
+		<header class="sticky-top">
+			<nav class="color-back text-white p-2">
+				<div class="container px-4">
+					<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+						<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+							<li><a href="/nosotros" class="nav-link px-2 text-light">Nosotros</a></li>
+						</ul>
+						<a href="mailto:distribuidoratimy@gmail.com" class="text-decoration-none color-text px-2"> <i
+								class="fas fa-envelope"></i>
+							distribuidoratimy@gmail.com
+						</a>
+						<a class="text-decoration-none text-light px-2">|</a>
+						<a href="tel:+51900900900" class="text-decoration-none color-text px-2"> <i
+								class="fas fa-phone-alt"></i>
+							900 900 900
+						</a>
+					</div>
+				</div>
+			</nav>
+
+			<nav class="navbar navbar-expand-lg navbar-dark text-white color-back-second p-4 shadow">
+				<div class="container px-4 justify-content-center">
+					<a class="navbar-brand" href="/">
+						<img th:src="@{/web/img/timy_hori.png}" alt="logo" height="50"
+							class="d-inline-block align-text-top">
+					</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+						data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="offcanvas offcanvas-start text-light bg-dark" tabindex="-1" id="offcanvasNavbar2">
+						<div class="offcanvas-header">
+							<h5 class="offcanvas-title" id="offcanvasNavbar2Label">Menú</h5>
+							<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+								aria-label="Close"></button>
+						</div>
+						<div class="offcanvas-body">
+							<div class="dropdown-center input-search">
+								<input type="text" id="buscador" name="buscador"
+									class="form-control dropdown-toggle input-img" role="button"
+									data-bs-toggle="dropdown" aria-expanded="false" placeholder="Buscar productos..." />
+								<div class="input-icon">
+									<i class="fas fa-search"></i>
+								</div>
+								<ul class="dropdown-menu" id="listaProductos">
+									<li class="dropdown-item contador text-center">Productos encontrados
+										<span id="count"></span>
+									</li>
+									<li class="dropdown-divider contador"></li>
+									<div th:each="prod: ${productos}">
+										<li class="producto">
+											<a class="dropdown-item" th:href="@{'/catalogo/' + ${prod.productoId}}">
+												<div class="row">
+													<div class="col align-self-center">
+														<img class="rounded float-start" alt="${prod.nombre}"
+															th:src="${prod.imagen}" height="50" />
+													</div>
+													<div class="col align-self-center">
+														<span class="text-start" th:text="${prod.nombre}"></span>
+													</div>
+												</div>
+											</a>
+										</li>
+									</div>
+									<li class="dropdown-item" id="empty" style="display: none;">Productos no
+										encontrados</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+	</div>
+
+	<div th:fragment="producto_card">
+		<div class="card h-100 shadow p-2 rounded-3 single-product">
+			<div class="product-image">
+				<a th:href="@{'/catalogo/' + ${prod.productoId}}"> <img class="card-img-top img-fluid efect"
+						th:alt="${prod.nombre}" th:src="${prod.imagen}" />
+				</a>
+			</div>
+			<div class="card-body pb-0 product-info mb-2">
+				<span class="category" th:text="${prod.categoria.nombre}"></span>
+				<h4 class="title">
+					<a th:href="@{'/catalogo/' + ${prod.productoId}}" th:text="${prod.nombre}">
+					</a>
+				</h4>
+				<div class="price">
+					<span th:text="'S/ '+${prod.precioVenta}"></span>
+				</div>
+			</div>
+
+			<div class="card-footer pt-0 border-top-0 bg-transparent">
+				<div class="d-grid">
+					<a class="btn btn-outline-primary" th:href="@{'/catalogo/' + ${prod.productoId}}">
+						Ver detalle
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="footer">
+		<a href="#" class="scroll-top up shadow"> <i class="fa-solid fa-caret-up"></i>
+		</a>
+		<section class="color-back text-white">
+			<div class="container">
+				<footer class="py-5">
+					<div class="row">
+						<div class="col-sm-6 col-md-6 col-lg-5 mb-3">
+							<img th:src="@{/web/img/timy_verti.png}" alt="" height="100" class="d-block w-80" />
+						</div>
+						<div class="col-sm-6 col-md-6 col-lg-2 mb-3">
+
+						</div>
+						<div class="col-sm-6 col-md-6 col-lg-2 mb-3">
+							<h5>Información</h5>
+							<ul class="nav flex-column">
+								<li class="nav-item mb-2"><a href="/#" class="nav-link p-0 text-light">Inicio</a>
+								</li>
+								<li class="nav-item mb-2"><a href="/cfarma/nosotros"
+										class="nav-link p-0 text-light">Nosotros</a></li>
+
+							</ul>
+						</div>
+						<div class="col-sm-6 col-md-6 col-lg-3 mb-3">
+							<h5>Contáctenos</h5>
+							<ul class="nav flex-column">
+								<li class="nav-item mb-2"><a href="tel:+51900900900" class="nav-link p-0 text-light"> <i
+											class="fas fa-phone-alt"></i>
+										900 900 900
+									</a></li>
+								<li class="nav-item mb-2"><a href="mailto:distribuidoratimy@gmail.com"
+										class="nav-link p-0 text-light"> <i class="fas fa-envelope"></i>
+										distribuidoratimy@gmail.com
+									</a></li>
+								<li class="nav-item mb-2"><a href="https://www.facebook.com/timy"
+										class="nav-link p-0 text-light"> <i class="fab fa-facebook-square"></i>
+										/timy
+									</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+						<p>&copy; 2024 Distribuidora & Comercializadora Timy E.I.R.L., Todos los derechos reservados.
+						</p>
+						<ul class="list-unstyled d-flex text-light">
+							<li class="ms-3">RUC</li>
+							<li class="ms-3"><a class="text-decoration-none link-color" href="#">
+									<span>20600415124</span></a></li>
+						</ul>
+					</div>
+				</footer>
+			</div>
+		</section>
+
+		<script src="/web/js/jquery-3.6.0.min.js"></script>
+		<script src="/web/js/script.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+			crossorigin="anonymous"></script>
+	</div>
+</body>
+
+</html>

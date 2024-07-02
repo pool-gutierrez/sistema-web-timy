@@ -1,0 +1,218 @@
+@charset "UTF-8";
+
+@media ( min-width : 991.98px) {
+	.adapter {
+		top: 54px;
+	}
+}
+
+@media ( max-width : 991.98px) {
+	.adapter {
+		top: 80px;
+	}
+}
+
+.filter {
+	display: none;
+}
+
+.color-back {
+	background-color: #434DB4;
+}
+
+.color-back-second {
+	background-color: #FFFFFF;
+}
+
+.underlined {
+	border-top: 5px solid #434DB4;
+}
+
+.text-custom {
+	color: #434DB4;
+}
+
+.color-text {
+	color: white;
+	transition: transform .3s;
+}
+
+.color-text:hover {
+	color: white;
+	transform: scale(1.04);
+}
+
+.link-color {
+	color: #D3D3D3;
+}
+
+.link-color:hover {
+	color: white;
+}
+
+.color-cart {
+	color: white;
+	transition: transform .3s;
+}
+
+.color-cart:hover {
+	color: white;
+	transform: scale(1.1);
+}
+
+.efect {
+	transition: transform .5s;
+}
+
+.efect:hover {
+	transform: scale(1.04);
+}
+
+.item-efect {
+	transition: transform .3s;
+}
+
+.item-efect:hover {
+	transform: scale(1.05);
+}
+
+.single-product {
+	margin-top: 20px;
+}
+
+.single-product .product-info {
+	padding: 20px;
+}
+
+.single-product .product-info .category {
+	color: #888;
+	font-size: 13px;
+	display: block;
+	margin-bottom: 2px;
+}
+
+.single-product .product-info .title a {
+	font-size: 18px;
+	font-weight: 700;
+	color: #081828;
+	text-decoration: none;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) , ( max-width
+	: 767px) {
+	.single-product .product-info .title a {
+		font-size: 15px;
+	}
+}
+
+.single-product .product-info .title a:hover {
+	color: #0167F3;
+}
+
+.single-product .product-info .price {
+	margin-top: 15px;
+}
+
+.single-product .product-info .price span {
+	font-size: 17px;
+	font-weight: 700;
+	color: #0167F3;
+	display: inline-block;
+}
+
+.input-search {
+	position: relative;
+	width: 100%;
+}
+
+.input-img {
+	padding-right: 40px;
+}
+
+.input-icon {
+	color: #6c757d;
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	left: auto;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.up {
+	display:none;
+   	text-align: center;
+   	line-height: 40px;
+	background:#fc6600;
+	border: 1px solid #fff;
+	font-size:20px;
+	color:#fff;
+	cursor:pointer;
+	position: fixed;
+	bottom:20px;
+	right:20px;
+	border-radius: 4px;
+	width: 40px;
+	height: 40px;
+	transition: transform .5s;
+}
+
+.up:hover {
+	transform: scale(1.05);
+	background-color: #fff;
+	border: 1px solid #434DB4;
+	color: #434DB4 !important;
+}
+
+.text-custom-high {
+	font-size: 150px;
+	color: #434DB4;
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        box-shadow: 0 0 var(--hover)
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 var(--hover)
+    }
+}
+
+.btn-primary:focus, .btn-primary:hover,
+.btn-secondary:focus, .btn-secondary:hover,
+.btn-outline-primary:focus, .btn-outline-primary:hover,
+.btn-outline-secondary:focus, .btn-outline-secondary:hover,
+.btn-outline-danger:focus, .btn-outline-danger:hover {
+    -webkit-animation: pulse 1.5s;
+    animation: pulse 1.5s;
+    box-shadow: 0 0 0 1em rgba(255, 255, 255, 0)
+}
+
+.btn-primary {
+    --color: #007BFF;
+    --hover: #007BFF
+}
+
+.btn-secondary {
+    --color: #6C757D;
+    --hover: #6C757D
+}
+
+.btn-outline-primary {
+    --color: #007BFF;
+    --hover: #007BFF
+}
+
+.btn-outline-secondary {
+    --color: #6C757D;
+    --hover: #6C757D
+}
+
+.btn-outline-danger {
+    --color: #DC3545;
+    --hover: #DC3545
+}

@@ -3,6 +3,7 @@ package com.pe.timy.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.pe.timy.entity.Categoria;
 import com.pe.timy.entity.Producto;
 import com.pe.timy.entity.Proveedor;
 
@@ -13,4 +14,5 @@ public interface ProductoService {
 	Optional<Producto> findById(Integer productoId);
 	void save(Producto producto);
 	List<Producto> findAllByProveedor(Proveedor proveedor);
+	List<Producto> findAllByCategoria(Categoria categoria);
 }
