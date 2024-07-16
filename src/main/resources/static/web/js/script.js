@@ -41,3 +41,21 @@ inputBuscar.addEventListener('keyup', (e) => {
 		document.getElementById('count').innerText = count;
 	}
 })
+
+
+function scrollToBottom() {
+	const chatBody = document.getElementById('chatBody');
+	chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function toggleChat() {
+	const chatContainer = document.getElementById('chatContainer');
+	if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+		chatContainer.style.display = 'flex';
+		scrollToBottom();
+	} else {
+		chatContainer.style.display = 'none';
+	}
+}
+
+window.onload = scrollToBottom;

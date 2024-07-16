@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Distribuidora Timy E.I.R.L.</title>
+
+	<head th:replace="~{web/fragment/layout :: head}"></head>
+</head>
+
+<body>
+	<div th:replace="~{web/fragment/layout :: header}"></div>
+
+	<div class="container py-4">
+		<div class="chat-container" id="chatContainer">
+			<div class="chat-header">
+				<h5 class="m-0">TimyBot</h5>
+				<span class="close-btn" onclick="toggleChat()">×</span>
+			</div>
+			<div class="chat-body" id="chatBody">
+				<div th:each="mensaje: ${mensajes}">
+					<div class="message received" th:if="${mensaje.chatbotId} %  2 != 0">
+						<div class="message-content">
+							<p th:text="${mensaje.mensaje}"></p>
+						</div>
+						<div class="message-time-received">
+							<p th:text="${mensaje.hora}"></p>
+						</div>
+					</div>
+
+					<div class="message sent" th:if="${mensaje.chatbotId}  %  2 == 0">
+						<div class="message-content">
+							<p th:text="${mensaje.mensaje}"></p>
+						</div>
+						<div class="message-time-sent">
+							<p th:text="${mensaje.hora}"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<form method="post" th:action="@{/chatbot/enviar}">
+				<div class="input-group">
+					<input type="text" th:name="mensaje" class="form-control" placeholder="Escribe tu consulta aquí...">
+					<button class="btn btn-primary">Enviar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<button class="floating-btn" onclick="toggleChat()"><img th:src="@{/web/img/cb_2.png}" alt="cht"></button>
+
+	<div th:replace="~{web/fragment/layout :: footer}"></div>
+</body>
+
+</html>
