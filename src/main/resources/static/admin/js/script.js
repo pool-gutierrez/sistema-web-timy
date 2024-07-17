@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	const descuento = document.getElementById('descuento');
 	const total = document.getElementById('total');
 
-	// Verifica si los elementos existen
 	if (subtotal && descuento && total) {
 		function calcularResultado() {
 			const numero1 = parseFloat(subtotal.value);
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	if (analisisBtn) {
 		analisisBtn.addEventListener("click", function() {
-			loadingOverlay.style.display = 'flex'; // Mostrar el overlay
+			loadingOverlay.style.display = 'flex';
 
 			fetch("http://localhost:8096/servicio/inventario")
 				.then(response => {
@@ -40,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
 					return response.json();
 				})
 				.then(data => {
-					loadingOverlay.style.display = 'none'; // Ocultar el overlay
+					loadingOverlay.style.display = 'none';
 					document.getElementById("modalRespuesta").innerText = data.respuesta;
-					$('#respuestaModal').modal('show'); // Mostrar el modal
+					$('#respuestaModal').modal('show');
 				})
 				.catch(error => {
-					loadingOverlay.style.display = 'none'; // Ocultar el overlay
+					loadingOverlay.style.display = 'none';
 					console.error("Error:", error);
 				});
 		});
