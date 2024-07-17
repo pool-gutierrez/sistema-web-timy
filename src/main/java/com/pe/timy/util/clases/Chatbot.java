@@ -1,4 +1,4 @@
-package com.pe.timy.util;
+package com.pe.timy.util.clases;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

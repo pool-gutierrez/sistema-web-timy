@@ -1,4 +1,4 @@
-package com.pe.timy.util;
+package com.pe.timy.util.clases;
 
 public class Part {
 	private String text;

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pe.timy.entity.Empleado;
 import com.pe.timy.service.EmpleadoService;
-import com.pe.timy.service.GeneralService;
 import com.pe.timy.service.RolService;
+import com.pe.timy.util.GeneralService;
 
 @Controller
 @RequestMapping("empleado")

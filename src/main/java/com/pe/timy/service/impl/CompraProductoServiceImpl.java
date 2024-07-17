@@ -1,5 +1,7 @@
 package com.pe.timy.service.impl;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pe.timy.entity.CompraProducto;
 import com.pe.timy.repository.CompraProductoRepository;
 import com.pe.timy.service.CompraProductoService;
+import com.pe.timy.util.clases.Entrada;
 
 @Service
 public class CompraProductoServiceImpl implements CompraProductoService {
@@ -26,5 +29,19 @@ public class CompraProductoServiceImpl implements CompraProductoService {
 	@Transactional
 	public void save(CompraProducto compraProducto) {
 		compraProductoRepository.save(compraProducto);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Entrada> findProductosPorFecha(Integer productoId) {
+		List<Object[]> results = compraProductoRepository.findTotalProductosVendidosPorDia(productoId);
+		List<Entrada> entradas = new ArrayList<>();
+        for (Object[] result : results) {
+            LocalDate fecha = (LocalDate) result[0];
+            Long cantidadTotal = (Long) result[1];
+            Integer valorInt = Math.toIntExact(cantidadTotal);
+            entradas.add(new Entrada(fecha, valorInt));
+        }
+        return entradas;
 	}
 }

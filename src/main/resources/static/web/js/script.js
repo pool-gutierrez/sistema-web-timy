@@ -116,7 +116,7 @@ function sendMessage() {
     }
 
     // URL de la API REST
-    let url = 'http://localhost:8096/chatbot/enviar?mensaje=' + encodeURIComponent(userMessage);
+    let url = 'http://localhost:8096/servicio/chatbot?mensaje=' + encodeURIComponent(userMessage);
 
     // Realizar la solicitud GET usando jQuery
     $.get(url, function(response) {
@@ -144,7 +144,7 @@ function sendMessage() {
 // Función para cargar los mensajes iniciales del chat desde la API REST
 function cargarMensajesIniciales() {
     // URL de la API REST
-    let url = 'http://localhost:8096/chatbot/enviar?mensaje=';  // Cambia esta URL según tu endpoint
+    let url = 'http://localhost:8096/servicio/chatbot?mensaje=';  // Cambia esta URL según tu endpoint
 
     // Realizar la solicitud GET usando jQuery
     $.get(url, function(response) {
