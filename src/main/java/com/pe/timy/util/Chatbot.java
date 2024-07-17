@@ -6,37 +6,62 @@ import java.time.format.DateTimeFormatter;
 public class Chatbot {
 
 	private Integer chatbotId;
+	private String emisor;
 	private String mensaje;
 	private String hora;
 
 	public Chatbot() {
 	}
-
-	public Chatbot(Integer chatbotId, String mensaje, LocalTime hora) {
+	
+	public Chatbot(Integer chatbotId, String emisor, String mensaje, LocalTime hora) {
 		this.chatbotId = chatbotId;
+		this.emisor = emisor;
 		this.mensaje = mensaje;
 		this.hora = formatHora(hora);
 	}
 
+	
 	public Integer getChatbotId() {
 		return chatbotId;
 	}
+
+
 
 	public void setChatbotId(Integer chatbotId) {
 		this.chatbotId = chatbotId;
 	}
 
+
+
+	public String getEmisor() {
+		return emisor;
+	}
+
+
+
+	public void setEmisor(String emisor) {
+		this.emisor = emisor;
+	}
+
+
+
 	public String getMensaje() {
 		return mensaje;
 	}
+
+
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
 
+
+
 	public String getHora() {
 		return hora;
 	}
+
+
 
 	public void setHora(String hora) {
 		this.hora = hora;

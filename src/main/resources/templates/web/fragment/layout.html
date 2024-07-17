@@ -122,8 +122,26 @@
 	</div>
 
 	<div th:fragment="footer">
-		<a href="#" class="scroll-top up shadow"> <i class="fa-solid fa-caret-up"></i>
-		</a>
+		<div class="container py-4">
+			<div class="chat-container" id="chatContainer">
+				<div class="chat-header">
+					<h5 class="m-0">TimyBot</h5>
+					<span class="close-btn" onclick="toggleChat()">×</span>
+				</div>
+				<div class="chat-body" id="chatBody">
+					<div class="message sent">
+					</div>
+					<div class="message received">
+					</div>
+				</div>
+				<div class="input-group">
+					<input type="text" class="form-control" id="userMessageInput" placeholder="Type your message...">
+					<button class="btn btn-primary" onclick="sendMessage()">Enviar</button>
+				</div>
+			</div>
+		</div>
+
+
 		<section class="color-back text-white">
 			<div class="container">
 				<footer class="py-5">
@@ -175,6 +193,11 @@
 				</footer>
 			</div>
 		</section>
+
+
+
+
+		<button class="floating-btn" onclick="toggleChat()"><img th:src="@{/web/img/cb_2.png}" alt="cht"></button>
 
 		<script src="/web/js/jquery-3.6.0.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
