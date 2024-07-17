@@ -47,7 +47,7 @@ public class SecurityConfig {
 						.requestMatchers("/inventario", "/inventario/**").hasAnyRole("Administrador", "Almacenero")
 						.requestMatchers("/cotizacion", "/cotizacion/**").hasAnyRole("Administrador", "Vendedor")
 						.requestMatchers("/compra", "/compra/**").hasAnyRole("Administrador", "Almacenero")
-						//.requestMatchers("/venta", "/venta/**").hasAnyRole("Administrador", "Vendedor")
+						.requestMatchers("/venta", "/venta/**").hasAnyRole("Administrador", "Vendedor")
 						.anyRequest().permitAll())
 				.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
 						.usernameParameter("usuario").passwordParameter("password")

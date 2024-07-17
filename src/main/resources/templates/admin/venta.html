@@ -1,38 +1,40 @@
 <head th:replace="~{admin/fragment/head}"></head>
-<div class="container">
+<div class="container-fluid">
+	<div class="card shadow m-4 p-5">
 
-	<h3 class="text-center">Ventas</h3>
+		<h3 class="text-center">Ventas</h3>
 
-	<a class="btn btn-primary" th:href="@{/venta/generar}">Nueva venta</a>
+		<a class="btn btn-primary" th:href="@{/venta/generar}">Nueva venta</a>
 
-	<hr class="border-bottom">
-	<table class="table table-striped table-hover" id="tablaProductos">
-		<thead>
-			<th># de venta</th>
-			<th>Fecha</th>
-			<th>Hora</th>
-			<th>Empleado</th>
-			<th>Cliente</th>
-			<th>Estado</th>
-			<th>Acciones</th>
-		</thead>
-		<tbody>
-			<tr th:each="venta: ${ventas}">
-				<td th:text="${venta.ventaId}"></td>
-				<td th:text="${venta.fecha}"></td>
-				<td th:text="${#temporals.format(venta.hora, 'HH:mm:ss')}"></td>
-				<td th:text="${venta.empleado.nombres}+' '+${venta.empleado.apellidos}"></td>
-				<td th:text="${venta.cliente.nombres}+' '+${venta.cliente.nombres}"></td>
-				<td>
-					<label th:if="${venta.estado=='Pendiente'}">Pendiente</label>
-					<label th:if="${venta.estado=='Finalizado'}">Finalizado</label>
-				</td>
-				<td>
-					<a class="btn btn-success" th:if="${venta.estado=='Pendiente'}"
-						th:href="@{'/venta/finalizar/' + ${venta.ventaId}}">Finalizar</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<hr class="border-bottom">
+		<table class="table table-striped table-hover" id="tablaProductos">
+			<thead>
+				<th># de venta</th>
+				<th>Fecha</th>
+				<th>Hora</th>
+				<th>Empleado</th>
+				<th>Cliente</th>
+				<th>Estado</th>
+				<th>Acciones</th>
+			</thead>
+			<tbody>
+				<tr th:each="venta: ${ventas}">
+					<td th:text="${venta.ventaId}"></td>
+					<td th:text="${venta.fecha}"></td>
+					<td th:text="${#temporals.format(venta.hora, 'HH:mm:ss')}"></td>
+					<td th:text="${venta.empleado.nombres}+' '+${venta.empleado.apellidos}"></td>
+					<td th:text="${venta.cliente.nombres}+' '+${venta.cliente.nombres}"></td>
+					<td>
+						<label th:if="${venta.estado=='Pendiente'}">Pendiente</label>
+						<label th:if="${venta.estado=='Finalizado'}">Finalizado</label>
+					</td>
+					<td>
+						<a class="btn btn-success" th:if="${venta.estado=='Pendiente'}"
+							th:href="@{'/venta/finalizar/' + ${venta.ventaId}}">Finalizar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </div>
 <footer th:replace="~{admin/fragment/foot}"></footer>

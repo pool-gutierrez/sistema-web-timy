@@ -10,3 +10,16 @@
 	align-items: center;
 	z-index: 1050;
 }
+
+.sidebar {
+	background-color: #434DB4 !important;
+}
+
+.btn.btn-primary {
+	background-color: #434DB4;
+	border: 1px solid #434DB4;
+}
+
+.btn.btn-primary:hover {
+	background-color: rgb(92, 94, 154);
+}

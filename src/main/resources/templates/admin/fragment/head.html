@@ -6,6 +6,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Distribuidora Timy E.I.R.L.</title>
+		<link rel="shortcut icon" type="image/png" href="/web/img/timy_verti.png" />
 		<meta content="Sistema Web" name="Sistema" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -23,12 +24,12 @@
 
 <body id="page-top">
 	<div id="wrapper">
-		<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion custom-navbar" id="accordionSidebar">
+		<ul class="navbar-nav sidebar sidebar-dark accordion custom-navbar" id="accordionSidebar">
 			<a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/producto}">
 				<div class="sidebar-brand-icon">
-					<i class="fas fa-store"></i>
+					<img src="/web/img/timy_verti.png" width="40" />
 				</div>
-				<div class="sidebar-brand-text mx-3">Distribuidora Timy</div>
+				<div class="sidebar-brand-text mx-3">Timy</div>
 			</a>
 
 			<hr class="sidebar-divider my-0">
@@ -121,7 +122,7 @@
 
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
-				<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+				<nav class="navbar navbar-expand navbar-light bg-light topbar mb-4 static-top shadow">
 					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
 						<i class="fa fa-bars"></i>
 					</button>
@@ -131,18 +132,12 @@
 						<li class="nav-item dropdown no-arrow">
 							<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="mr-2 d-none d-lg-inline text-gray-600 small">Usuario</span>
-								<img class="img-profile rounded-circle"
-									src="https://w7.pngwing.com/pngs/527/663/png-transparent-logo-person-user-person-icon-rectangle-photography-computer-wallpaper.png">
+								<span class="mr-2 d-none d-lg-inline small" sec:authentication="name"></span>
+								<img class="img-profile rounded-circle" src="/web/img/perfil.png">
 							</a>
 
 							<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
 								aria-labelledby="userDropdown">
-								<a class="dropdown-item" href="#">
-									<i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-									Mi cuenta
-								</a>
-								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
 									<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 									Cerrar sesión

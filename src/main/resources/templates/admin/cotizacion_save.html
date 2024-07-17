@@ -1,127 +1,137 @@
 <head th:replace="~{admin/fragment/head}"></head>
-<div class="container">
-	<h3 class="text-center">Cotización N° <label th:text="${cotizacion.codigo}"></label></h3>
+<div class="container-fluid">
+	<div class="card shadow m-4 p-5">
+		<h3 class="text-center">Cotización N° <label th:text="${cotizacion.codigo}"></label></h3>
 
-	<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsm==true}">
-		<strong><i class="fa-solid fa-triangle-exclamation"></i> Peligro de stock</strong> La cantidad ingresada supera
-		al stock mínimo.
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsm==true}">
+			<strong><i class="fa-solid fa-triangle-exclamation"></i> Peligro de stock</strong> La cantidad ingresada
+			supera
+			al stock mínimo.
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsa==true}">
+			<strong><i class="fa-solid fa-triangle-exclamation"></i> Peligro de stock</strong> La cantidad ingresada no
+			puede
+			ser mayor que el stock actual
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<form method="post" th:object="${cotizacionProducto}" th:action="@{/cotizacion/agregar-producto}">
+			<div class="row">
+				<div class="col-6">
+					<label>Fecha</label>
+					<input class="form-control" th:value="${cotizacion.fecha}" readonly>
+				</div>
+				<div class="col-6">
+					<label>Cliente</label>
+					<select th:if="${clienteId==null}" required class="form-control" th:name="clienteId">
+						<option value="" hidden="true">Seleccione un cliente</option>
+						<option th:each="cliente : ${clientes}" th:value="${cliente.clienteId}"
+							th:text="${cliente.nombres}+' '+${cliente.apellidos}+' - DNI: '+${cliente.dni}"></option>
+					</select>
+					<select th:if="${clienteId!=null}" required class="form-control" th:name="clienteId">
+						<option th:each="cliente : ${clientes}" th:value="${cliente.clienteId}"
+							th:text="${cliente.nombres}+' '+${cliente.apellidos}+' - DNI: '+${cliente.dni}"
+							th:selected="${clienteId}==${cliente.clienteId}">
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-6">
+					<label>Producto</label>
+					<select required class="form-control" th:field="${cotizacionProducto.producto}">
+						<option value="" hidden="true">Seleccione un producto</option>
+						<option th:each="producto : ${productos}" th:value="${producto.productoId}"
+							th:text="${producto.nombre}+' - S/'+${producto.precioVenta}">
+						</option>
+					</select>
+				</div>
+				<div class="col-3">
+					<label>Cantidad</label>
+					<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
+						class="form-control" th:field="${cotizacionProducto.cantidad}" type="number" min="1">
+				</div>
+				<div class="col-3 d-flex flex-column">
+					<div class="mt-auto d-grid gap-2">
+						<button type="submit" class="btn btn-info">Agregar producto</button>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<hr class="border-bottom">
+		<table class="table table-striped table-hover" id="tablaProductos">
+			<thead>
+				<th>Opciones</th>
+				<th>#</th>
+				<th>Producto</th>
+				<th>Precio de compra</th>
+				<th>Cantidad</th>
+				<th>Monto</th>
+			</thead>
+			<tbody class="table-group-divider">
+				<tr th:each="cotizacionProducto, itrStat : ${listaCotizacion}">
+					<td>
+						<a class="btn btn-danger" th:href="@{'/cotizacion/aumentar-producto/' + ${itrStat.index}}"> <i
+								class="fa-solid fa-plus"></i></a>
+						<a class="btn btn-danger" th:href="@{'/cotizacion/disminuir-producto/' + ${itrStat.index}}"> <i
+								class="fa-solid fa-minus"></i></a>
+						<a class="btn btn-danger" th:href="@{'/cotizacion/quitar-producto/' + ${itrStat.index}}"> <i
+								class="fa-solid fa-trash-can"></i></a>
+					</td>
+					<td th:text="${itrStat.index+1}"></td>
+					<td th:text="${cotizacionProducto.producto.nombre}"></td>
+					<td th:text="${cotizacionProducto.producto.precioVenta}"></td>
+					<td th:text="${cotizacionProducto.cantidad}"></td>
+					<td
+						th:text="${#numbers.formatDecimal(cotizacionProducto.producto.precioVenta*cotizacionProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
+					</td>
+				</tr>
+				<tr th:if="${total==null || total==0.0}">
+					<td class="text-center" colspan="6">Agregue algunos productos</td>
+				</tr>
+				<tr th:if="${total!=null && total!=0.0}">
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td class="text-end fw-bold">Subtotal</td>
+					<td class="fw-bold" th:text="'S/'+${total}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<form method="post" th:object="${cotizacion}" th:action="@{/cotizacion/registrar}">
+			<div class="row">
+				<input class="form-control" type="hidden" th:value="${total}" id="subtotal">
+				<div class="col-3">
+					<label>Descuento</label>
+					<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
+						class="form-control" th:name="descuento" type="number" value="0" step="0.01" min="0"
+						id="descuento">
+				</div>
+				<div class="col-3">
+					<label>OP. Gravada</label>
+					<input class="form-control" readonly th:value="${total}">
+				</div>
+				<div class="col-3">
+					<label>IGV</label>
+					<input class="form-control" readonly th:value="${total}">
+				</div>
+				<div class="col-3">
+					<label>Total</label>
+					<input required readonly class="form-control" th:name="montoTotal" type="number" th:value="${total}"
+						id="total">
+				</div>
+			</div>
+			<hr class="border-bottom">
+			<button type="submit" class="btn btn-primary">Registrar cotizacion</button>
+		</form>
 	</div>
-	<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsa==true}">
-		<strong><i class="fa-solid fa-triangle-exclamation"></i> Peligro de stock</strong> La cantidad ingresada no
-		puede
-		ser mayor que el stock actual
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
-
-	<form method="post" th:object="${cotizacionProducto}" th:action="@{/cotizacion/agregar-producto}">
-		<div class="row">
-			<div class="col-6">
-				<label>Fecha</label>
-				<input class="form-control" th:value="${cotizacion.fecha}" readonly>
-			</div>
-			<div class="col-6">
-				<label>Cliente</label>
-				<select th:if="${clienteId==null}" required class="form-control" th:name="clienteId">
-					<option value="" hidden="true">Seleccione un cliente</option>
-					<option th:each="cliente : ${clientes}" th:value="${cliente.clienteId}"
-						th:text="${cliente.nombres}+' '+${cliente.apellidos}+' - DNI: '+${cliente.dni}"></option>
-				</select>
-				<select th:if="${clienteId!=null}" required class="form-control" th:name="clienteId">
-					<option th:each="cliente : ${clientes}" th:value="${cliente.clienteId}"
-						th:text="${cliente.nombres}+' '+${cliente.apellidos}+' - DNI: '+${cliente.dni}"
-						th:selected="${clienteId}==${cliente.clienteId}">
-					</option>
-				</select>
-			</div>
-		</div>
-		<label>Producto</label>
-		<select required class="form-control" th:field="${cotizacionProducto.producto}">
-			<option value="" hidden="true">Seleccione un producto</option>
-			<option th:each="producto : ${productos}" th:value="${producto.productoId}"
-				th:text="${producto.nombre}+' - S/'+${producto.precioVenta}">
-			</option>
-		</select>
-		<div class="row">
-			<div class="col-6">
-				<label>Cantidad</label>
-				<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
-					class="form-control" th:field="${cotizacionProducto.cantidad}" type="number" min="1">
-			</div>
-			<div class="col-6">
-				<label></label>
-				<button type="submit" class="btn btn-primary">Agregar producto</button>
-			</div>
-		</div>
-	</form>
-
-	<hr class="border-bottom">
-	<table class="table table-striped table-hover" id="tablaProductos">
-		<thead>
-			<th>Opciones</th>
-			<th>#</th>
-			<th>Producto</th>
-			<th>Precio de compra</th>
-			<th>Cantidad</th>
-			<th>Monto</th>
-		</thead>
-		<tbody class="table-group-divider">
-			<tr th:each="cotizacionProducto, itrStat : ${listaCotizacion}">
-				<td>
-					<a class="btn btn-danger" th:href="@{'/cotizacion/aumentar-producto/' + ${itrStat.index}}">+</a>
-					<a class="btn btn-danger" th:href="@{'/cotizacion/disminuir-producto/' + ${itrStat.index}}">-</a>
-					<a class="btn btn-danger" th:href="@{'/cotizacion/quitar-producto/' + ${itrStat.index}}">Quitar</a>
-				</td>
-				<td th:text="${itrStat.index+1}"></td>
-				<td th:text="${cotizacionProducto.producto.nombre}"></td>
-				<td th:text="${cotizacionProducto.producto.precioVenta}"></td>
-				<td th:text="${cotizacionProducto.cantidad}"></td>
-				<td
-					th:text="${#numbers.formatDecimal(cotizacionProducto.producto.precioVenta*cotizacionProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
-				</td>
-			</tr>
-			<tr th:if="${total==null || total==0.0}">
-				<td class="text-center" colspan="6">Agregue algunos productos</td>
-			</tr>
-			<tr th:if="${total!=null && total!=0.0}">
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td class="text-end fw-bold">Subtotal</td>
-				<td class="fw-bold" th:text="'S/'+${total}"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<form method="post" th:object="${cotizacion}" th:action="@{/cotizacion/registrar}">
-		<div class="row">
-			<input class="form-control" type="hidden" th:value="${total}" id="subtotal">
-			<div class="col-3">
-				<label>Descuento</label>
-				<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
-					class="form-control" th:name="descuento" type="number" value="0" step="0.01" min="0" id="descuento">
-			</div>
-			<div class="col-3">
-				<label>OP. Gravada</label>
-				<input class="form-control" readonly th:value="${total}">
-			</div>
-			<div class="col-3">
-				<label>IGV</label>
-				<input class="form-control" readonly th:value="${total}">
-			</div>
-			<div class="col-3">
-				<label>Total</label>
-				<input required readonly class="form-control" th:name="montoTotal" type="number" th:value="${total}"
-					id="total">
-			</div>
-		</div>
-
-		<button type="submit" class="btn btn-primary">Registrar cotizacion</button>
-	</form>
 </div>
 <footer th:replace="~{admin/fragment/foot}"></footer>
