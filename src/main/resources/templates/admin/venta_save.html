@@ -2,6 +2,23 @@
 <div class="container">
 
 	<h3 class="text-center">Nueva venta</h3>
+
+	<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsm==true}">
+		<strong><i class="fa-solid fa-triangle-exclamation"></i>Peligro de stock</strong> La cantidad ingresada supera
+		al stock mínimo.
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${errorsa==true}">
+		<strong><i class="fa-solid fa-triangle-exclamation"></i>Peligro de stock</strong> La cantidad ingresada no puede
+		ser mayor que el stock actual
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+
 	<form method="post" th:object="${ventaProducto}" th:action="@{/venta/agregar-producto}">
 		<div class="row">
 			<div class="col-6">
@@ -33,8 +50,8 @@
 		<div class="row">
 			<div class="col-6">
 				<label>Cantidad</label>
-				<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
-					class="form-control" th:field="${ventaProducto.cantidad}" type="number">
+				<input required minlength="1" maxlength="4" onkeypress="return validarNumeros(event, this)"
+					class="form-control" th:field="${ventaProducto.cantidad}" type="number" min="1">
 			</div>
 			<div class="col-6">
 				<label></label>
@@ -55,9 +72,9 @@
 		<tbody class="table-group-divider">
 			<tr th:each="ventaProducto, itrStat : ${listaVenta}">
 				<td>
-					<a class="btn btn-danger" th:href="@{'/venta/aumentar-producto/' + ${itrStat.index}}">+</a>
-					<a class="btn btn-danger" th:href="@{'/venta/disminuir-producto/' + ${itrStat.index}}">-</a>
-					<a class="btn btn-danger" th:href="@{'/venta/quitar-producto/' + ${itrStat.index}}">Quitar</a>
+					<a class="btn btn-warning" th:href="@{'/venta/aumentar-producto/' + ${itrStat.index}}"><i class="fa-solid fa-plus"></i></a>
+					<a class="btn btn-warning" th:href="@{'/venta/disminuir-producto/' + ${itrStat.index}}"><i class="fa-solid fa-minus"></i></a>
+					<a class="btn btn-danger" th:href="@{'/venta/quitar-producto/' + ${itrStat.index}}"><i class="fa-solid fa-trash-can"></i></a>
 				</td>
 				<td th:text="${itrStat.index+1}"></td>
 				<td th:text="${ventaProducto.producto.nombre}"></td>
@@ -67,7 +84,10 @@
 					th:text="${#numbers.formatDecimal(ventaProducto.producto.precioVenta*ventaProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
 				</td>
 			</tr>
-			<tr>
+			<tr th:if="${total==null || total==0.0}">
+				<td class="text-center" colspan="6">Agregue algunos productos</td>
+			</tr>
+			<tr th:if="${total!=null && total!=0.0}">
 				<td></td>
 				<td></td>
 				<td></td>

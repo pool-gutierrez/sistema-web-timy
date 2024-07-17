@@ -56,7 +56,10 @@
 				<td th:text="${compraProducto.cantidad}"></td>
 				<td th:text="${compraProducto.producto.precioCompra}*${compraProducto.cantidad}"></td>
 			</tr>
-			<tr>
+			<tr th:if="${total==null || total==0.0}">
+				<td class="text-center" colspan="6">Agregue algunos productos</td>
+			</tr>
+			<tr th:if="${total!=null && total!=0.0}">
 				<td></td>
 				<td></td>
 				<td></td>

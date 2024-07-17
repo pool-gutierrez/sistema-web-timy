@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -67,17 +68,44 @@ public class VentaController {
 	@PostMapping(value = "/agregar-producto")
 	public String agregarProducto(Model model, VentaProducto ventaProducto,
 			@RequestParam(name = "clienteId", required = false) Integer clienteId) {
-		detalleVenta.add(ventaProducto);
+		Optional<Inventario> inventario = inventarioService.findByProducto(ventaProducto.getProducto());
+		Integer stockActual = inventario.get().getStockActual();
+		Integer stockMinimo = inventario.get().getStockMinimo();
+		Boolean existencia = false;
+
+		model.addAttribute("venta", ventaGeneral);
+		model.addAttribute("ventaProducto", new VentaProducto());
+		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("clientes", clienteService.findAllActive());
 		if (clienteId != null) {
 			clienteIdGeneral = clienteId;
 			model.addAttribute("clienteId", clienteId);
 		}
-		model.addAttribute("venta", ventaGeneral);
-		model.addAttribute("ventaProducto", new VentaProducto());
+		if (ventaProducto.getCantidad() < stockActual) {
+			if ((stockActual - ventaProducto.getCantidad()) > stockMinimo) {
+				for (VentaProducto detalle : detalleVenta) {
+					if (detalle.getProducto().getProductoId().equals(ventaProducto.getProducto().getProductoId())) {
+						Integer nuevaCantidad = detalle.getCantidad() + ventaProducto.getCantidad();
+						if ((stockActual - nuevaCantidad) > stockMinimo) {
+							detalle.setCantidad(nuevaCantidad);
+						} else {
+							model.addAttribute("errorsm", true);
+						}
+						existencia = true;
+						break;
+					}
+				}
+				if (existencia == false) {
+					detalleVenta.add(ventaProducto);
+				}
+				model.addAttribute("total", obtenerMontoTotal());
+			} else {
+				model.addAttribute("errorsm", true);
+			}
+		} else {
+			model.addAttribute("errorsa", true);
+		}
 		model.addAttribute("listaVenta", detalleVenta);
-		model.addAttribute("productos", productoService.findAllActive());
-		model.addAttribute("total", obtenerMontoTotal());
-		model.addAttribute("clientes", clienteService.findAllActive());
 		return "admin/venta_save";
 	}
 
@@ -98,23 +126,34 @@ public class VentaController {
 
 	@GetMapping(value = "/aumentar-producto/{index}")
 	public String aumentarProducto(Model model, @PathVariable("index") int index) {
-		List<VentaProducto> nuevaListaVentaProductos = new ArrayList<>();
-		for (VentaProducto ventaProducto : detalleVenta) {
-			if (ventaProducto.equals(detalleVenta.get(index))) {
-				ventaProducto.setCantidad(ventaProducto.getCantidad() + 1);
-			}
-			nuevaListaVentaProductos.add(ventaProducto);
-		}
-		detalleVenta = nuevaListaVentaProductos;
+		VentaProducto detalle = detalleVenta.get(index);
+		Optional<Inventario> inventario = inventarioService.findByProducto(detalle.getProducto());
+		Integer stockActual = inventario.get().getStockActual();
+		Integer stockMinimo = inventario.get().getStockMinimo();
+		Integer nuevaCantidad = detalle.getCantidad() + 1;
 		if (clienteIdGeneral != null) {
 			model.addAttribute("clienteId", clienteIdGeneral);
 		}
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("listaVenta", detalleVenta);
 		model.addAttribute("productos", productoService.findAllActive());
-		model.addAttribute("total", obtenerMontoTotal());
 		model.addAttribute("clientes", clienteService.findAllActive());
+		List<VentaProducto> nuevaListaVentaProductos = new ArrayList<>();
+
+		if ((stockActual - nuevaCantidad) > stockMinimo) {
+			for (VentaProducto ventaProducto : detalleVenta) {
+				if (ventaProducto.equals(detalleVenta.get(index))) {
+					ventaProducto.setCantidad(nuevaCantidad);
+				}
+				nuevaListaVentaProductos.add(ventaProducto);
+				detalleVenta = nuevaListaVentaProductos;
+			}
+		} else {
+			model.addAttribute("errorsm", true);
+		}
+
+		model.addAttribute("listaVenta", detalleVenta);
+		model.addAttribute("total", obtenerMontoTotal());
 		return "admin/venta_save";
 	}
 
@@ -152,7 +191,7 @@ public class VentaController {
 		ventaGeneral.setEstado("Pendiente");
 		ventaGeneral.setFecha(LocalDate.now());
 		ventaGeneral.setHora(LocalTime.now());
-		
+
 		for (VentaProducto detalle : detalleVenta) {
 			detalle.setPrecioVenta(detalle.getProducto().getPrecioVenta());
 		}
@@ -164,8 +203,8 @@ public class VentaController {
 			detalle.setVenta(ventaGeneral);
 			ventaProductoService.save(detalle);
 			Inventario inventario = inventarioService.findByProducto(detalle.getProducto()).get();
-			inventario.setSalidas(inventario.getSalidas()+detalle.getCantidad());
-			inventario.setStockActual(inventario.getEntradas()-inventario.getSalidas());
+			inventario.setSalidas(inventario.getSalidas() + detalle.getCantidad());
+			inventario.setStockActual(inventario.getEntradas() - inventario.getSalidas());
 			inventarioService.save(inventario);
 		}
 
