@@ -12,7 +12,7 @@
 				<th>Empleado</th>
 				<th>Cliente</th>
 				<th>Estado</th>
-				<th>Acciones</th>
+				<th>Monto total</th>
 			</thead>
 			<tbody>
 				<tr th:each="cotizacion: ${cotizaciones}">
@@ -21,14 +21,8 @@
 					<td th:text="${#temporals.format(cotizacion.hora, 'HH:mm:ss')}"></td>
 					<td th:text="${cotizacion.empleado.nombres}+' '+${cotizacion.empleado.apellidos}"></td>
 					<td th:text="${cotizacion.cliente.nombres}+' '+${cotizacion.cliente.nombres}"></td>
-					<td>
-						<label th:if="${cotizacion.estado=='Emitido'}">Emitido</label>
-						<label th:if="${cotizacion.estado=='Vendido'}">Vendido</label>
-					</td>
-					<td>
-						<a class="btn btn-success" th:if="${cotizacion.estado=='Emitido'}"
-							th:href="@{'/cotizacion/finalizar/' + ${cotizacion.cotizacionId}}">Generar venta</a>
-					</td>
+					<td th:text="${cotizacion.estado}"></td>
+					<td th:text="'S/ '+${cotizacion.montoTotal}"></td>
 				</tr>
 			</tbody>
 		</table>

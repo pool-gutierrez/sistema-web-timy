@@ -28,7 +28,6 @@ public class Venta implements Serializable {
 	private LocalTime hora;
 	private Double descuento;
 	private Double montoTotal;
-	//Estado = {Pendiente, Finalizado}
 	private String estado;
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")

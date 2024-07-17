@@ -15,7 +15,7 @@
 				<th>Empleado</th>
 				<th>Cliente</th>
 				<th>Estado</th>
-				<th>Acciones</th>
+				<th>Monto total</th>
 			</thead>
 			<tbody>
 				<tr th:each="venta: ${ventas}">
@@ -24,14 +24,8 @@
 					<td th:text="${#temporals.format(venta.hora, 'HH:mm:ss')}"></td>
 					<td th:text="${venta.empleado.nombres}+' '+${venta.empleado.apellidos}"></td>
 					<td th:text="${venta.cliente.nombres}+' '+${venta.cliente.nombres}"></td>
-					<td>
-						<label th:if="${venta.estado=='Pendiente'}">Pendiente</label>
-						<label th:if="${venta.estado=='Finalizado'}">Finalizado</label>
-					</td>
-					<td>
-						<a class="btn btn-success" th:if="${venta.estado=='Pendiente'}"
-							th:href="@{'/venta/finalizar/' + ${venta.ventaId}}">Finalizar</a>
-					</td>
+					<td th:text="${venta.estado}"></td>
+					<td th:text="'S/ '+${venta.montoTotal}"></td>
 				</tr>
 			</tbody>
 		</table>

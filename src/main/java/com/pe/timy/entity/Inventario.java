@@ -30,7 +30,6 @@ public class Inventario implements Serializable {
 	private Producto producto;
 	
 	public Inventario() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getInventarioId() {

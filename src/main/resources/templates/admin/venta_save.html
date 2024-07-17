@@ -94,6 +94,8 @@
 						th:text="${#numbers.formatDecimal(ventaProducto.producto.precioVenta*ventaProducto.cantidad, 1, 'COMMA', 2, 'POINT')}">
 					</td>
 				</tr>
+			</tbody>
+			<tfoot>
 				<tr th:if="${total==null || total==0.0}">
 					<td class="text-center" colspan="6">Agregue algunos productos</td>
 				</tr>
@@ -105,7 +107,7 @@
 					<td class="text-end fw-bold">Subtotal</td>
 					<td class="fw-bold" th:text="'S/'+${total}"></td>
 				</tr>
-			</tbody>
+			</tfoot>
 		</table>
 
 		<form method="post" th:object="${venta}" th:action="@{/venta/registrar}">

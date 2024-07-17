@@ -54,4 +54,10 @@ public class ProductoServiceImpl implements ProductoService {
 	public List<Producto> findAllByCategoria(Categoria categoria) {
 		return productoRepository.findAllByCategoriaAndEstado(categoria, true);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<Producto> findProductosConStock() {
+		return productoRepository.findProductosConStockSuperiorAlMinimo();
+	}
 }

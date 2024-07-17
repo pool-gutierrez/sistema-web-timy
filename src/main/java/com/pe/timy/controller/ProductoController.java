@@ -1,6 +1,7 @@
 package com.pe.timy.controller;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pe.timy.entity.Inventario;
 import com.pe.timy.entity.Producto;
 import com.pe.timy.service.CategoriaService;
 import com.pe.timy.service.CloudinaryService;
+import com.pe.timy.service.InventarioService;
 import com.pe.timy.service.ProductoService;
 import com.pe.timy.service.ProveedorService;
 
@@ -33,6 +36,8 @@ public class ProductoController {
 	private ProveedorService proveedorService;
 	@Autowired
 	private CloudinaryService cloudinaryService;
+	@Autowired
+	private InventarioService inventarioService;
 
 	@GetMapping({ "/", "" })
 	public String listar(Model model) {
@@ -53,6 +58,14 @@ public class ProductoController {
 		producto.setImagen(result.get("secure_url").toString());
 		producto.setImagenId(result.get("public_id").toString());
 		productoService.save(producto);
+		Inventario inventario = new Inventario();
+		inventario.setEntradas(0);
+		inventario.setSalidas(0);
+		inventario.setFechaActualizacion(LocalDate.now());
+		inventario.setProducto(producto);
+		inventario.setStockActual(0);
+		inventario.setStockMinimo(0);
+		inventarioService.save(inventario);
 		return "redirect:/producto/";
 	}
 

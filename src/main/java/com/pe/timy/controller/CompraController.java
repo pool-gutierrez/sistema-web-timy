@@ -146,7 +146,7 @@ public class CompraController {
 	public String registrar(Compra compra, Authentication authentication) {
 		compraGeneral.setEmpleado(empleadoService.findByUsuario(authentication.getName()));
 		compraGeneral.setProveedor(compraGeneral.getProveedor());
-		compraGeneral.setEstado("Pendiente");
+		compraGeneral.setEstado("COMPRADO");
 		compraGeneral.setFecha(LocalDate.now());
 		compraGeneral.setHora(LocalTime.now());
 
@@ -164,7 +164,8 @@ public class CompraController {
 			inventario.setStockActual(inventario.getEntradas() - inventario.getSalidas());
 			inventarioService.save(inventario);
 		}
-
+		detalleCompra.clear();
+		compraGeneral = null;
 		return "redirect:/compra/";
 	}
 

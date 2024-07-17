@@ -62,8 +62,10 @@
 					<td th:text="${compraProducto.producto.nombre}"></td>
 					<td th:text="${compraProducto.producto.precioCompra}"></td>
 					<td th:text="${compraProducto.cantidad}"></td>
-					<td th:text="${compraProducto.producto.precioCompra}*${compraProducto.cantidad}"></td>
+					<td th:text="${#numbers.formatDecimal(compraProducto.producto.precioCompra*compraProducto.cantidad, 1, 'COMMA', 2, 'POINT')}"></td>
 				</tr>
+			</tbody>
+			<tfoot>
 				<tr th:if="${total==null || total==0.0}">
 					<td class="text-center" colspan="6">Agregue algunos productos</td>
 				</tr>
@@ -75,7 +77,7 @@
 					<td class="text-end fw-bold">Total</td>
 					<td class="fw-bold" th:text="'S/'+${total}"></td>
 				</tr>
-			</tbody>
+			</tfoot>
 		</table>
 		<hr class="border-bottom">
 		<form method="post" th:object="${compra}" th:action="@{/compra/registrar}">

@@ -27,7 +27,6 @@ public class Compra implements Serializable {
 	private LocalDate fecha;
 	private LocalTime hora;
 	private Double montoTotal;
-	//Estado = {Pendiente, Finalizado}
 	private String estado;
 	@ManyToOne
 	@JoinColumn(name = "empleado_id")

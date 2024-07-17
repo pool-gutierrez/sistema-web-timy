@@ -15,4 +15,5 @@ public interface ProductoService {
 	void save(Producto producto);
 	List<Producto> findAllByProveedor(Proveedor proveedor);
 	List<Producto> findAllByCategoria(Categoria categoria);
+	List<Producto> findProductosConStock();
 }

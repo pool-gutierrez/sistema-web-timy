@@ -17,7 +17,7 @@
 				<th>Empleado</th>
 				<th>Proveedor</th>
 				<th>Estado</th>
-				<th>Acciones</th>
+				<th>Monto total</th>
 			</thead>
 			<tbody>
 				<tr th:each="compra: ${compras}">
@@ -25,15 +25,9 @@
 					<td th:text="${compra.fecha}"></td>
 					<td th:text="${#temporals.format(compra.hora, 'HH:mm:ss')}"></td>
 					<td th:text="${compra.empleado.nombres}+' '+${compra.empleado.apellidos}"></td>
+					<td th:text="${compra.estado}"></td>
 					<td th:text="${compra.proveedor.nombre}"></td>
-					<td>
-						<label th:if="${compra.estado=='Pendiente'}">Pendiente</label>
-						<label th:if="${compra.estado=='Finalizado'}">Finalizado</label>
-					</td>
-					<td>
-						<a class="btn btn-success" th:if="${compra.estado=='Pendiente'}"
-							th:href="@{'/compra/finalizar/' + ${compra.compraId}}">Finalizar</a>
-					</td>
+					<td th:text="'S/ '+${compra.montoTotal}"></td>
 				</tr>
 			</tbody>
 		</table>

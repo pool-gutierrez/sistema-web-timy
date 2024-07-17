@@ -60,7 +60,7 @@ public class VentaController {
 		ventaGeneral = venta;
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("productos", productoService.findProductosConStock());
 		model.addAttribute("clientes", clienteService.findAllActive());
 		return "admin/venta_save";
 	}
@@ -102,7 +102,7 @@ public class VentaController {
 		}
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("productos", productoService.findProductosConStock());
 		model.addAttribute("clientes", clienteService.findAllActive());
 		model.addAttribute("listaVenta", detalleVenta);
 		return "admin/venta_save";
@@ -117,7 +117,7 @@ public class VentaController {
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
 		model.addAttribute("listaVenta", detalleVenta);
-		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("productos", productoService.findProductosConStock());
 		model.addAttribute("total", obtenerMontoTotal());
 		model.addAttribute("clientes", clienteService.findAllActive());
 		return "admin/venta_save";
@@ -149,7 +149,7 @@ public class VentaController {
 
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("productos", productoService.findProductosConStock());
 		model.addAttribute("clientes", clienteService.findAllActive());
 		model.addAttribute("listaVenta", detalleVenta);
 		model.addAttribute("total", obtenerMontoTotal());
@@ -177,7 +177,7 @@ public class VentaController {
 		model.addAttribute("venta", ventaGeneral);
 		model.addAttribute("ventaProducto", new VentaProducto());
 		model.addAttribute("listaVenta", detalleVenta);
-		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("productos", productoService.findProductosConStock());
 		model.addAttribute("total", obtenerMontoTotal());
 		model.addAttribute("clientes", clienteService.findAllActive());
 		return "admin/venta_save";
@@ -187,7 +187,7 @@ public class VentaController {
 	public String registrar(Venta venta, Authentication authentication) {
 		ventaGeneral.setEmpleado(empleadoService.findByUsuario(authentication.getName()));
 		ventaGeneral.setCliente(clienteService.findById(clienteIdGeneral).get());
-		ventaGeneral.setEstado("Pendiente");
+		ventaGeneral.setEstado("VENDIDO");
 		ventaGeneral.setFecha(LocalDate.now());
 		ventaGeneral.setHora(LocalTime.now());
 

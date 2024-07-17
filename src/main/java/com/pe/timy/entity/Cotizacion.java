@@ -29,7 +29,6 @@ public class Cotizacion implements Serializable {
 	private LocalTime hora;
 	private Double descuento;
 	private Double montoTotal;
-	//Estado = {Emitido, Vendido}
 	private String estado;
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")

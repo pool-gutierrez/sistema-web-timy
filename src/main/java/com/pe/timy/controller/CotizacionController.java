@@ -191,7 +191,7 @@ public class CotizacionController {
 	public String registrar(Cotizacion cotizacion, Authentication authentication) {
 		cotizacionGeneral.setEmpleado(empleadoService.findByUsuario(authentication.getName()));
 		cotizacionGeneral.setCliente(clienteService.findById(clienteIdGeneral).get());
-		cotizacionGeneral.setEstado("Emitido");
+		cotizacionGeneral.setEstado("COTIZADO");
 		cotizacionGeneral.setFecha(LocalDate.now());
 		cotizacionGeneral.setHora(LocalTime.now());
 
