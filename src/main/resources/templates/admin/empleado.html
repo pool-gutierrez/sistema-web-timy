@@ -4,7 +4,8 @@
 		Registrar
 	</button>
 
-	<table class="table">
+	<hr class="border-bottom">
+	<table class="table table-striped table-hover" id="tablaDatos">
 		<thead>
 			<th>#</th>
 			<th>Nombre completo</th>
@@ -30,11 +31,11 @@
 						th:data-target="'#editarModal' + ${empleado.empleadoId}">
 						Editar
 					</button>
-
 					<a class="btn btn-success" th:if="${empleado.estado == false}"
 						th:href="@{'empleado/cambiar-estado/' + ${empleado.empleadoId}}">Activar</a>
 					<a class="btn btn-danger" th:if="${empleado.estado == true}"
 						th:href="@{'empleado/cambiar-estado/' + ${empleado.empleadoId}}">Desactivar</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -48,22 +49,23 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form method="post" th:object="${empleado}" th:action="@{empleado/registrar}">
+				<form method="post" th:object="${empleado}" th:action="@{empleado/registrar}" autocomplete="off">
 					<div class="modal-body">
 						<label>Nombres</label>
-						<input required minlength="4" maxlength="50" onkeypress="return validarLetras(event)"
+						<input required minlength="4" maxlength="100" onkeypress="return validarLetras(event)"
 							class="form-control" th:field="${empleado.nombres}">
 						<label>Apellidos</label>
-						<input required minlength="4" maxlength="50" onkeypress="return validarLetras(event)"
+						<input required minlength="4" maxlength="100" onkeypress="return validarLetras(event)"
 							class="form-control" th:field="${empleado.apellidos}">
 						<label>DNI</label>
 						<input required minlength="8" maxlength="8" onkeypress="return validarNumeros(event)"
-							class="form-control" th:field="${empleado.dni}">
+							class="form-control" th:field="${empleado.dni}" onblur="return validarDni()">
 						<label>Celular</label>
 						<input required minlength="9" maxlength="9" onkeypress="return validarNumeros(event)"
-							class="form-control" th:field="${empleado.celular}">
+							class="form-control" th:field="${empleado.celular}" onblur="return validarCelular()">
 						<label>Correo</label>
-						<input class="form-control" th:field="${empleado.correo}">
+						<input class="form-control" th:field="${empleado.correo}" required minlength="10"
+							maxlength="150" onkeypress="return validarCorreo(event)">
 						<label>Nombre de usuario</label>
 						<input required minlength="4" maxlength="50" onkeypress="return validarUsuario(event)"
 							class="form-control" th:field="${empleado.usuario}">
@@ -71,7 +73,7 @@
 						<input required minlength="4" maxlength="50" onkeypress="return validarDireccion(event)"
 							type="password" class="form-control" th:field="${empleado.contrasena}">
 						<label>Rol</label>
-						<select class="form-control" th:field="${empleado.rol}">
+						<select required class="form-control" th:field="${empleado.rol}">
 							<option value="" hidden="true">Seleccione un rol para el empleado</option>
 							<option th:each="rol : ${roles}" th:value="${rol.rolId}" th:text="${rol.nombre}">
 							</option>
@@ -96,7 +98,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<form method="post" th:object="${empleado}"
+					<form method="post" th:object="${empleado}" autocomplete="off"
 						th:action="@{'empleado/actualizar/' + ${empleado.empleadoId}}">
 						<div class="modal-body">
 							<label>Nombres</label>
@@ -107,10 +109,12 @@
 								class="form-control" th:value="${empleado.apellidos}" th:name="apellidos">
 							<label>DNI</label>
 							<input onkeypress="return validarNumeros(event)" required minlength="8" maxlength="8"
-								class="form-control" th:value="${empleado.dni}" th:name="dni">
+								class="form-control" th:value="${empleado.dni}" th:name="dni"
+								onblur="return validarDni()">
 							<label>Celular</label>
 							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
-								class="form-control" th:value="${empleado.celular}" th:name="celular">
+								class="form-control" th:value="${empleado.celular}" th:name="celular"
+								onblur="return validarCelular()">
 							<label>Correo</label>
 							<input onkeypress="return validarCorreo(event)" required minlength="10" maxlength="150"
 								class="form-control" th:value="${empleado.correo}" th:name="correo">

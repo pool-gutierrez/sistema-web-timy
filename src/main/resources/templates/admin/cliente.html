@@ -6,8 +6,8 @@
 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
 		Registrar
 	</button>
-
-	<table class="table">
+	<hr class="border-bottom">
+	<table class="table table-striped table-hover" id="tablaDatos">
 		<thead>
 			<th>#</th>
 			<th>Nombre</th>
@@ -37,6 +37,7 @@
 						th:href="@{'/cliente/cambiar-estado/' + ${cliente.clienteId}}">Activar</a>
 					<a class="btn btn-danger" th:if="${cliente.estado == true}"
 						th:href="@{'/cliente/cambiar-estado/' + ${cliente.clienteId}}">Desactivar</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -48,20 +49,20 @@
 					<h1 class="modal-title fs-5">Registrar cliente</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<form method="post" th:object="${cliente}" th:action="@{/cliente/registrar}">
+				<form method="post" th:object="${cliente}" th:action="@{/cliente/registrar}" autocomplete="off">
 					<div class="modal-body">
 						<label>Nombres</label>
-						<input class="form-control" th:field="${cliente.nombres}" required minlength="4" maxlength="150"
+						<input class="form-control" th:field="${cliente.nombres}" required minlength="4" maxlength="100"
 							onkeypress="return validarLetras(event)">
 						<label>Apellidos</label>
 						<input class="form-control" th:field="${cliente.apellidos}" required minlength="4"
-							maxlength="150" onkeypress="return validarLetras(event)">
+							maxlength="100" onkeypress="return validarLetras(event)">
 						<label>DNI</label>
 						<input class="form-control" th:field="${cliente.dni}" minlength="8" maxlength="8"
-							onkeypress="return validarNumeros(event)">
+							onkeypress="return validarNumeros(event)" onblur="return validarDni()">
 						<label>Celular</label>
 						<input class="form-control" th:field="${cliente.celular}" minlength="9" maxlength="9"
-							onkeypress="return validarNumeros(event)">
+							onkeypress="return validarNumeros(event)" onblur="return validarCelular()">
 						<label>Correo</label>
 						<input class="form-control" th:field="${cliente.correo}" minlength="10" maxlength="150"
 							onkeypress="return validarAlfanumericos(event)">
@@ -83,23 +84,25 @@
 						<h1 class="modal-title fs-5">Editar cliente</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<form method="post" th:object="${cliente}"
+					<form method="post" th:object="${cliente}" autocomplete="off"
 						th:action="@{'/cliente/actualizar/' + ${cliente.clienteId}}">
 						<div class="modal-body">
 							<label>Nombres:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="100"
 								class="form-control" type="text" th:value="${cliente.nombres}" th:name="nombres">
 							<label>Apellidos:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="100"
 								class="form-control" type="text" th:value="${cliente.apellidos}" th:name="apellidos">
 							<label>DNI:</label>
-							<input onkeypress="return validarNumeros(event)" required minlength="8" maxlength="8"
-								class="form-control" type="text" th:value="${cliente.dni}" th:name="dni">
+							<input onkeypress="return validarNumeros(event)" onblur="return validarDni()" required
+								minlength="8" maxlength="8" class="form-control" type="text" th:value="${cliente.dni}"
+								th:name="dni">
 							<label>Celular:</label>
-							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
-								class="form-control" type="text" th:value="${cliente.celular}" th:name="celular">
+							<input onkeypress="return validarNumeros(event)" onblur="return validarCelular()" required
+								minlength="9" maxlength="9" class="form-control" type="text"
+								th:value="${cliente.celular}" th:name="celular">
 							<label>Correo:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="10" maxlength="150"
+							<input onkeypress="return validarCorreo(event)" required minlength="10" maxlength="150"
 								class="form-control" type="text" th:value="${cliente.correo}" th:name="correo">
 						</div>
 						<div class="modal-footer">

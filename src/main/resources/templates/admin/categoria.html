@@ -6,8 +6,8 @@
 	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registroModal">
 		Registrar
 	</button>
-
-	<table class="table">
+	<hr class="border-bottom">
+	<table class="table table-striped table-hover" id="tablaDatos">
 		<thead>
 			<th>#</th>
 			<th>Nombre</th>
@@ -33,9 +33,11 @@
 						th:href="@{'/categoria/cambiar-estado/' + ${categoria.categoriaId}}">Activar</a>
 					<a class="btn btn-danger" th:if="${categoria.estado == true}"
 						th:href="@{'/categoria/cambiar-estado/' + ${categoria.categoriaId}}">Desactivar</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
+
 
 	<div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -44,14 +46,14 @@
 					<h1 class="modal-title fs-5">Registrar categoría</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<form method="post" th:object="${categoria}" th:action="@{/categoria/registrar}">
+				<form method="post" th:object="${categoria}" th:action="@{/categoria/registrar}" autocomplete="off">
 					<div class="modal-body">
 						<label>Nombre</label>
 						<input class="form-control" th:field="${categoria.nombre}" required minlength="4"
-							maxlength="150" onkeypress="return validarLetras(event)">
+							maxlength="100" onkeypress="return validarLetras(event)">
 						<label>Descripción</label>
-						<input class="form-control" th:field="${categoria.descripcion}" minlength="4" maxlength="150"
-							onkeypress="return validarLetras(event)">
+						<input class="form-control" th:field="${categoria.descripcion}" minlength="4" maxlength="250"
+							onkeypress="return validarAlfanumerico(event)">
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Registrar</button>
@@ -70,14 +72,14 @@
 						<h1 class="modal-title fs-5">Editar categoría</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<form method="post" th:object="${categoria}"
+					<form method="post" th:object="${categoria}" autocomplete="off"
 						th:action="@{'/categoria/actualizar/' + ${categoria.categoriaId}}">
 						<div class="modal-body">
 							<label>Nombre:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="100"
 								class="form-control" type="text" th:value="${categoria.nombre}" th:name="nombre">
 							<label>Descripción:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="150"
+							<input onkeypress="return validarAlfanumerico(event)" required minlength="4" maxlength="250"
 								class="form-control" type="text" th:value="${categoria.descripcion}"
 								th:name="descripcion">
 						</div>

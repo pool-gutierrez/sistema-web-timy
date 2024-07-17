@@ -7,7 +7,8 @@
 		Registrar
 	</button>
 
-	<table class="table">
+	<hr class="border-bottom">
+	<table class="table table-striped table-hover" id="tablaDatos">
 		<thead>
 			<th>#</th>
 			<th>Nombre</th>
@@ -37,6 +38,7 @@
 						th:href="@{'/proveedor/cambiar-estado/' + ${proveedor.proveedorId}}">Activar</a>
 					<a class="btn btn-danger" th:if="${proveedor.estado == true}"
 						th:href="@{'/proveedor/cambiar-estado/' + ${proveedor.proveedorId}}">Desactivar</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -48,23 +50,23 @@
 					<h1 class="modal-title fs-5">Registrar proveedor</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<form method="post" th:object="${proveedor}" th:action="@{/proveedor/registrar}">
+				<form method="post" th:object="${proveedor}" th:action="@{/proveedor/registrar}" autocomplete="off">
 					<div class="modal-body">
 						<label>Nombre</label>
 						<input class="form-control" th:field="${proveedor.nombre}" required minlength="4"
-							maxlength="150" onkeypress="return validarLetras(event)">
+							maxlength="150" onkeypress="return validarAlfanumerico(event)">
 						<label>RUC</label>
 						<input class="form-control" th:field="${proveedor.ruc}" required minlength="11" maxlength="11"
-							onkeypress="return validarLetras(event)">
+							onkeypress="return validarNumeros(event)">
 						<label>Número de contacto</label>
 						<input class="form-control" th:field="${proveedor.numeroContacto}" minlength="9" maxlength="9"
-							onkeypress="return validarNumeros(event)">
+							onkeypress="return validarNumeros(event)" onblur="return validarCelular()" required>
 						<label>Correo</label>
 						<input class="form-control" th:field="${proveedor.correo}" minlength="10" maxlength="150"
-							onkeypress="return validarAlfanumericos(event)">
+							onkeypress="return validarCorreo(event)" required>
 						<label>Dirección</label>
 						<input class="form-control" th:field="${proveedor.direccion}" minlength="10" maxlength="250"
-							onkeypress="return validarDireccion(event)">
+							onkeypress="return validarDireccion(event)" required>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" class="btn btn-primary">Registrar</button>
@@ -83,22 +85,24 @@
 						<h1 class="modal-title fs-5">Editar proveedor</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-					<form method="post" th:object="${proveedor}"
+					<form method="post" th:object="${proveedor}" autocomplete="off"
 						th:action="@{'/proveedor/actualizar/' + ${proveedor.proveedorId}}">
 						<div class="modal-body">
-							<label>Nombre:</label>
-							<input onkeypress="return validarLetras(event)" required minlength="4" maxlength="50"
+							<label>Nombre</label>
+							<input onkeypress="return validarAlfanumerico(event)" required minlength="4" maxlength="150"
 								class="form-control" type="text" th:value="${proveedor.nombre}" th:name="nombre">
-							<label>RUC:</label>
+							<label>RUC</label>
 							<input onkeypress="return validarNumeros(event)" required minlength="11" maxlength="11"
 								class="form-control" type="text" th:value="${proveedor.ruc}" th:name="ruc">
-							<label>Número de contacto:</label>
+							<label>Número de contacto</label>
 							<input onkeypress="return validarNumeros(event)" required minlength="9" maxlength="9"
-								class="form-control" type="text" th:value="${proveedor.numeroContacto}" th:name="numeroContacto">
-							<label>Correo:</label>
-							<input onkeypress="return validarAlfanumericos(event)" required minlength="10" maxlength="150"
-								class="form-control" type="text" th:value="${proveedor.correo}" th:name="correo">
-							<label>Dirección:</label>
+								class="form-control" type="text" th:value="${proveedor.numeroContacto}"
+								th:name="numeroContacto" onblur="return validarCelular()">
+							<label>Correo</label>
+							<input onkeypress="return validarCorreo(event)" required minlength="10"
+								maxlength="150" class="form-control" type="text" th:value="${proveedor.correo}"
+								th:name="correo">
+							<label>Dirección</label>
 							<input onkeypress="return validarDireccion(event)" required minlength="4" maxlength="250"
 								class="form-control" type="text" th:value="${proveedor.direccion}" th:name="direccion">
 						</div>

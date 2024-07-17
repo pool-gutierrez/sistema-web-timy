@@ -10,7 +10,8 @@
 		</div>
 	</div>
 
-	<table class="table">
+	<hr class="border-bottom">
+	<table class="table table-striped table-hover" id="tablaDatos">
 		<thead>
 			<th>#</th>
 			<th>Producto</th>
@@ -35,6 +36,7 @@
 						th:data-bs-target="'#editarModal' + ${inventario.inventarioId}">
 						Editar
 					</button>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -65,7 +67,7 @@
 							<label>Stock mínimo</label>
 							<input required minlength="1" maxlength="8" onkeypress="return validarNumeros(event, this)"
 								class="form-control" type="number" th:value="${inventario.stockMinimo}"
-								th:name="stockMinimo" min="0">
+								th:name="stockMinimo" min="1">
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -78,20 +80,20 @@
 	</div>
 
 	<div class="modal fade" id="respuestaModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="modalLabel">Análisis del inventario</h5>
-	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	            </div>
-	            <div class="modal-body">
-	                <p id="modalRespuesta"></p>
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-	            </div>
-	        </div>
-	    </div>
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalLabel">Análisis del inventario</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p id="modalRespuesta"></p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <footer th:replace="~{admin/fragment/foot}"></footer>
