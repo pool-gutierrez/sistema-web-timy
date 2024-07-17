@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.pe.timy.entity.Cotizacion;
 import com.pe.timy.entity.CotizacionProducto;
+import com.pe.timy.entity.Inventario;
 import com.pe.timy.service.ClienteService;
 import com.pe.timy.service.CotizacionProductoService;
 import com.pe.timy.service.CotizacionService;
 import com.pe.timy.service.EmpleadoService;
+import com.pe.timy.service.InventarioService;
 import com.pe.timy.service.ProductoService;
 
 @Controller
@@ -37,7 +40,9 @@ public class CotizacionController {
 	private EmpleadoService empleadoService;
 	@Autowired
 	private CotizacionProductoService cotizacionProductoService;
-	
+	@Autowired
+	private InventarioService inventarioService;
+
 	List<CotizacionProducto> detalleCotizacion = new ArrayList<>();
 	Cotizacion cotizacionGeneral = new Cotizacion();
 	Integer clienteIdGeneral = 0;
@@ -53,7 +58,7 @@ public class CotizacionController {
 	public String generar(Model model, Cotizacion cotizacion) {
 		cotizacion.setFecha(LocalDate.now());
 		cotizacionGeneral = cotizacion;
-		cotizacionGeneral.setCodigo(generarCodigo(cotizacionService.findAll().size()+1));
+		cotizacionGeneral.setCodigo(generarCodigo(cotizacionService.findAll().size() + 1));
 		model.addAttribute("cotizacion", cotizacionGeneral);
 		model.addAttribute("cotizacionProducto", new CotizacionProducto());
 		model.addAttribute("productos", productoService.findAllActive());
@@ -64,14 +69,43 @@ public class CotizacionController {
 	@PostMapping(value = "/agregar-producto")
 	public String agregarProducto(Model model, CotizacionProducto cotizacionProducto,
 			@RequestParam(name = "clienteId", required = false) Integer clienteId) {
-		detalleCotizacion.add(cotizacionProducto);
+		Optional<Inventario> inventario = inventarioService.findByProducto(cotizacionProducto.getProducto());
+		Integer stockActual = inventario.get().getStockActual();
+		Integer stockMinimo = inventario.get().getStockMinimo();
+		Boolean existencia = false;
 		if (clienteId != null) {
 			clienteIdGeneral = clienteId;
 			model.addAttribute("clienteId", clienteId);
 		}
+
+		if (cotizacionProducto.getCantidad() < stockActual) {
+			if ((stockActual - cotizacionProducto.getCantidad()) > stockMinimo) {
+				for (CotizacionProducto detalle : detalleCotizacion) {
+					if (detalle.getProducto().getProductoId()
+							.equals(cotizacionProducto.getProducto().getProductoId())) {
+						Integer nuevaCantidad = detalle.getCantidad() + cotizacionProducto.getCantidad();
+						if ((stockActual - nuevaCantidad) > stockMinimo) {
+							detalle.setCantidad(nuevaCantidad);
+						} else {
+							model.addAttribute("errorsm", true);
+						}
+						existencia = true;
+						break;
+					}
+				}
+				if (existencia == false) {
+					detalleCotizacion.add(cotizacionProducto);
+				}
+				model.addAttribute("total", obtenerMontoTotal());
+			} else {
+				model.addAttribute("errorsm", true);
+			}
+		} else {
+			model.addAttribute("errorsa", true);
+		}
+		model.addAttribute("listaCotizacion", detalleCotizacion);
 		model.addAttribute("cotizacion", cotizacionGeneral);
 		model.addAttribute("cotizacionProducto", new CotizacionProducto());
-		model.addAttribute("listaCotizacion", detalleCotizacion);
 		model.addAttribute("productos", productoService.findAllActive());
 		model.addAttribute("total", obtenerMontoTotal());
 		model.addAttribute("clientes", clienteService.findAllActive());
@@ -95,17 +129,28 @@ public class CotizacionController {
 
 	@GetMapping(value = "/aumentar-producto/{index}")
 	public String aumentarProducto(Model model, @PathVariable("index") int index) {
-		List<CotizacionProducto> nuevaListaCotizacionProductos = new ArrayList<>();
-		for (CotizacionProducto cotizacionProducto : detalleCotizacion) {
-			if (cotizacionProducto.equals(detalleCotizacion.get(index))) {
-				cotizacionProducto.setCantidad(cotizacionProducto.getCantidad() + 1);
-			}
-			nuevaListaCotizacionProductos.add(cotizacionProducto);
-		}
-		detalleCotizacion = nuevaListaCotizacionProductos;
+		CotizacionProducto detalle = detalleCotizacion.get(index);
+		Optional<Inventario> inventario = inventarioService.findByProducto(detalle.getProducto());
+		Integer stockActual = inventario.get().getStockActual();
+		Integer stockMinimo = inventario.get().getStockMinimo();
+		Integer nuevaCantidad = detalle.getCantidad() + 1;
 		if (clienteIdGeneral != null) {
 			model.addAttribute("clienteId", clienteIdGeneral);
 		}
+		List<CotizacionProducto> nuevaListaCotizacionProductos = new ArrayList<>();
+		
+		if ((stockActual - nuevaCantidad) > stockMinimo) {
+			for (CotizacionProducto cotizacionProducto : detalleCotizacion) {
+				if (cotizacionProducto.equals(detalleCotizacion.get(index))) {
+					cotizacionProducto.setCantidad(nuevaCantidad);
+				}
+				nuevaListaCotizacionProductos.add(cotizacionProducto);
+				detalleCotizacion = nuevaListaCotizacionProductos;
+			}
+		} else {
+			model.addAttribute("errorsm", true);
+		}
+		
 		model.addAttribute("cotizacion", cotizacionGeneral);
 		model.addAttribute("cotizacionProducto", new CotizacionProducto());
 		model.addAttribute("listaCotizacion", detalleCotizacion);
@@ -149,7 +194,7 @@ public class CotizacionController {
 		cotizacionGeneral.setEstado("Emitido");
 		cotizacionGeneral.setFecha(LocalDate.now());
 		cotizacionGeneral.setHora(LocalTime.now());
-		
+
 		for (CotizacionProducto detalle : detalleCotizacion) {
 			detalle.setPrecioVenta(detalle.getProducto().getPrecioVenta());
 		}
@@ -175,9 +220,9 @@ public class CotizacionController {
 		}
 		return Math.round(montoTotal * 100d) / 100d;
 	}
-	
+
 	public String generarCodigo(int numero) {
-        String codigo = String.format("0001-%06d", numero);
-        return codigo;
-    }
+		String codigo = String.format("0001-%06d", numero);
+		return codigo;
+	}
 }

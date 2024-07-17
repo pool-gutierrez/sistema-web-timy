@@ -72,11 +72,6 @@ public class VentaController {
 		Integer stockActual = inventario.get().getStockActual();
 		Integer stockMinimo = inventario.get().getStockMinimo();
 		Boolean existencia = false;
-
-		model.addAttribute("venta", ventaGeneral);
-		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("productos", productoService.findAllActive());
-		model.addAttribute("clientes", clienteService.findAllActive());
 		if (clienteId != null) {
 			clienteIdGeneral = clienteId;
 			model.addAttribute("clienteId", clienteId);
@@ -105,6 +100,10 @@ public class VentaController {
 		} else {
 			model.addAttribute("errorsa", true);
 		}
+		model.addAttribute("venta", ventaGeneral);
+		model.addAttribute("ventaProducto", new VentaProducto());
+		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("clientes", clienteService.findAllActive());
 		model.addAttribute("listaVenta", detalleVenta);
 		return "admin/venta_save";
 	}
@@ -134,10 +133,6 @@ public class VentaController {
 		if (clienteIdGeneral != null) {
 			model.addAttribute("clienteId", clienteIdGeneral);
 		}
-		model.addAttribute("venta", ventaGeneral);
-		model.addAttribute("ventaProducto", new VentaProducto());
-		model.addAttribute("productos", productoService.findAllActive());
-		model.addAttribute("clientes", clienteService.findAllActive());
 		List<VentaProducto> nuevaListaVentaProductos = new ArrayList<>();
 
 		if ((stockActual - nuevaCantidad) > stockMinimo) {
@@ -152,6 +147,10 @@ public class VentaController {
 			model.addAttribute("errorsm", true);
 		}
 
+		model.addAttribute("venta", ventaGeneral);
+		model.addAttribute("ventaProducto", new VentaProducto());
+		model.addAttribute("productos", productoService.findAllActive());
+		model.addAttribute("clientes", clienteService.findAllActive());
 		model.addAttribute("listaVenta", detalleVenta);
 		model.addAttribute("total", obtenerMontoTotal());
 		return "admin/venta_save";
