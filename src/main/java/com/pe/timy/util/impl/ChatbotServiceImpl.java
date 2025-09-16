@@ -18,8 +18,8 @@ public class ChatbotServiceImpl implements ChatbotService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	private final String API_URL_TEMPLATE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=%s";
-	private final String KEY = "AIzaSyB8bsnKD1J3wb-XbM8t91IMef8-0SIhuQE";
+	private final String API_URL_TEMPLATE = "";
+	private final String KEY = "";
 	
 	@Override
 	public String callApi(String prompt) {
